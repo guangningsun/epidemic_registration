@@ -15,7 +15,7 @@ class CheckInfo(models.Model):
     registerTime = models.CharField(max_length=200,verbose_name='注册时间')
     checkin_status = models.CharField(max_length=200,verbose_name='是否已分配')
     family_member_num = models.CharField(max_length=200,verbose_name='成员数量')
-    family_member_id  = models.CharField(max_length=200,verbose_name='家庭id')
+    family_id  = models.CharField(max_length=200,verbose_name='家庭id')
     name = models.CharField(max_length=200,verbose_name='成员姓名')  
     gender = models.CharField(max_length=200,verbose_name='成员性别')
     age = models.CharField(max_length=200,verbose_name='成员年龄')

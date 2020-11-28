@@ -82,7 +82,7 @@ def get_family_info(request,tel_num):
                                      "registerTime" :serializer.data[0]["family_tel_num"] ,
                                      "checkin_status" :serializer.data[0]["family_tel_num"] ,
                                      "family_member_num" :serializer.data[0]["family_tel_num"] ,
-                                     "family_member_id": serializer.data[0]["family_member_id"],
+                                     "family_id": serializer.data[0]["family_id"],
                                      "family_member_list": family_member_list_array 
                                     } 
                     }}
