@@ -37,7 +37,7 @@ class CheckInfo(models.Model):
         verbose_name_plural = '入住登记'
     
     def __str__(self):
-        return self.user_name
+        return self.family_contact_name
 
 
 class UserInfo(models.Model):
