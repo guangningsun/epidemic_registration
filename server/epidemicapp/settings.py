@@ -180,16 +180,12 @@ SIMPLEUI_CONFIG = {
         'name': '机构管理',
         'icon': 'fab fa-dashcube',
         'models': [{
-            'name': '部门管理',
-            'url': 'AppModel/category',
+            'name': '入住管理',
+            'url': 'AppModel/checkin/',
             'icon': 'fa fa-server'
         },{
             'name': '用户管理',
             'url': 'AppModel/userinfo/',
-            'icon': 'fa fa-server'
-        },{
-            'name': '部门预算',
-            'url': 'AppModel/budgetinfo/',
             'icon': 'fa fa-server'
         }]
         },{
