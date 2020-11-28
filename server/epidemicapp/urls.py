@@ -14,6 +14,6 @@ urlpatterns = [
     
     re_path(r'^media/(?P<path>.+)$', serve, {'document_root': settings.MEDIA_ROOT}),
   
-
+    path('get_family_info/<tel_num>', views.get_family_info),
 ] 
  

@@ -177,7 +177,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, "static")
 SIMPLEUI_CONFIG = {
     'menus': [{
         'app': 'AppModel',
-        'name': '机构管理',
+        'name': '疫情管理',
         'icon': 'fab fa-dashcube',
         'models': [{
             'name': '入住管理',

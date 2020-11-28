@@ -47,7 +47,47 @@ def _generate_json_message(flag, message):
         return HttpResponse("{\"error\":1,\"msg\":\""+message+"\"}",
                             content_type='application/json',
                             )
-                            
+
+
+
+# 获取家庭信息
+@api_view(['GET', 'POST'])
+def get_family_info(request,tel_num):
+    if request.method == 'GET':
+        checkinset = CheckInfo.objects.filter(family_tel_num=tel_num)
+        serializer = CheckinSerializer(checkinset, many=True)
+         for i in range (0,len(serializer.data)):
+        for k,v in serializer.data[i].items():
+            if k=="order_items":
+                relist = []
+                for commodity_id in v:
+                    item = {}
+                    commodityinfo = CommodityInfo.objects.get(id=commodity_id) 
+                    item["commodity_name"] = commodityinfo.commodity_name
+                    cstatus ="-"
+                    if commodityinfo.commodity_status == "0":
+                        cstatus = "备货中"
+                    item["commodity_status"] = cstatus
+
+                    relist.append(item)
+                serializer.data[i]['order_items'] = relist
+            if k=="order_apartment":
+                serializer.data[i]['order_apartment'] = Category.objects.get(id=v).name
+            if k=="order_user":
+                serializer.data[i]['order_user'] = UserInfo.objects.get(id=v).user_name
+
+        res_json = {"error": 0,"msg": {
+                    "family_info": serializer.data }}
+        return Response(res_json)
+    # elif request.method == 'POST':
+    #     serializer = UserSerializer(data=request.data)
+    #     if serializer.is_valid():
+    #         serializer.save()
+    #         res_json = {"error": 0,"msg": {
+    #                 "user_info": serializer.data }}
+    #         return Response(res_json, status=status.HTTP_201_CREATED)
+    #     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 # 通过微信id获取用户信息
 @api_view(['GET'])
@@ -58,8 +98,6 @@ def get_user_info_by_wxid(request,weixin_id):
         res_json = {"error": 0,"msg": {
                     "user_info": serializer.data }}
         return Response(res_json)
-
-
 
 
 # weixin 登录
