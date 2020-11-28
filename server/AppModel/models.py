@@ -8,6 +8,38 @@ from django.utils.html import format_html
 from AppModel import *
 
 
+class CheckInfo(models.Model):
+    family_contact_name = models.CharField(max_length=200,verbose_name='联系人姓名')
+    tel_num = models.CharField(max_length=200,verbose_name='联系人电话')
+    address = models.CharField(max_length=200,verbose_name='联系人住址')
+    registerTime = models.CharField(max_length=200,verbose_name='注册时间')
+    status = models.CharField(max_length=200,verbose_name='是否已分配')
+    family_member_num = models.CharField(max_length=200,verbose_name='成员数量')
+    family_member_id  = models.CharField(max_length=200,verbose_name='家庭id')
+    name = models.CharField(max_length=200,verbose_name='成员姓名')  
+		gender = models.CharField(max_length=200,verbose_name='成员性别')
+		age = models.CharField(max_length=200,verbose_name='成员年龄')
+		nation = models.CharField(max_length=200,verbose_name='民族')
+		id_num = models.CharField(max_length=200,verbose_name='身份证号')
+		tel_num = models.CharField(max_length=200,verbose_name='成员电话号')   
+		address = models.CharField(max_length=200,verbose_name='成员地址')   
+		work_place = models.CharField(max_length=200,verbose_name='成员工作地点')
+		has_disease_radio = models.BooleanField(verbose_name='是否有病史')
+		disease_name = models.CharField(max_length=200,verbose_name='病史名称')
+		medicine_name = models.CharField(max_length=200,verbose_name='用药名称')
+		has_take_medicine_radio = models.CharField(max_length=200,verbose_name='是否用药')
+    room = models.CharField(max_length=200,verbose_name='分配房间名',default="False")
+    hotel = models.CharField(max_length=200,verbose_name='分配酒店名称',default="False")
+   
+
+    class Meta:
+        verbose_name = '入住登记'
+        verbose_name_plural = '入住登记'
+    
+    def __str__(self):
+        return self.user_name
+
+
 class UserInfo(models.Model):
     AUTH_CHOICES = [
     ('0', '住户'),
