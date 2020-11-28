@@ -27,7 +27,7 @@ logger.addHandler(handler)
 
 
 # 用户管理
-@admin.register(UserInfo)
+@admin.register(CheckInfo)
 class UserInfoAdmin(ImportExportModelAdmin): 
     list_display=['id','nick_name','user_name','weixin_openid','phone_number','auth']
     search_fields =('nick_name','user_name','weixin_openid','phone_number','auth')
