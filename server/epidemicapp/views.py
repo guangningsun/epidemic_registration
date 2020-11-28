@@ -76,12 +76,13 @@ def get_family_info(request,tel_num):
             family_member_list_array.append(family_member_info)
 
         res_json = {"error": 0,"msg": {
-                    "family_info": { "family_contact_name" :serializer.data[0].family_contact_name ,
-                                     "tel_num" :serializer.data[0].family_tel_num ,
-                                     "family_address" :serializer.data[0].family_tel_num ,
-                                     "registerTime" :serializer.data[0].family_tel_num ,
-                                     "checkin_status" :serializer.data[0].family_tel_num ,
-                                     "family_member_num" :serializer.data[0].family_tel_num ,
+                    "family_info": { "family_contact_name" :serializer.data[0]["family_contact_name"] ,
+                                     "tel_num" :serializer.data[0]["family_tel_num"] ,
+                                     "family_address" :serializer.data[0]["family_tel_num"] ,
+                                     "registerTime" :serializer.data[0]["family_tel_num"] ,
+                                     "checkin_status" :serializer.data[0]["family_tel_num"] ,
+                                     "family_member_num" :serializer.data[0]["family_tel_num"] ,
+                                     "family_member_id": serializer.data[0]["family_member_id"],
                                      "family_member_list": family_member_list_array 
                                     } 
                     }}
