@@ -177,44 +177,6 @@ STATIC_ROOT = os.path.join(BASE_DIR, "static")
 SIMPLEUI_CONFIG = {
     'menus': [{
         'app': 'AppModel',
-        'name': '全局商品管理',
-        'icon': 'fab fa-dashcube',
-        'models': [{
-            'name': '商品类型管理',
-            'url': 'AppModel/assetinfo',
-            'icon': 'fa fa-server'
-        },{
-            'name': '物品分类管理',
-            'url': 'AppModel/commoditycategory/',
-            'icon': 'fa fa-server'
-        }, {
-            'name': '全局订单管理',
-            'url': 'AppModel/orderinfo',
-            'icon': 'fa fa-server'
-        },{
-            'name': '统计查询',
-            'url': 'AppModel/statisticsinfo/',
-            'icon': 'fa fa-server'
-        }]
-        },{
-        'app': 'AppModel',
-        'name': '供应商管理',
-        'icon': 'fab fa-dashcube',
-        'models': [{
-            'name': '供应商库存管理',
-            'url': 'AppModel/supplierassetinfo',
-            'icon': 'fa fa-server'
-        },{
-            'name': '供应商订单管理',
-            'url': 'AppModel/commodityinfo',
-            'icon': 'fa fa-server'
-        },{
-            'name': '供应商进网管理',
-            'url': 'AppModel/supplierinfo/',
-            'icon': 'fa fa-server'
-        }]
-        },{
-        'app': 'AppModel',
         'name': '机构管理',
         'icon': 'fab fa-dashcube',
         'models': [{
