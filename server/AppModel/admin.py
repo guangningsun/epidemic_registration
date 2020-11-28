@@ -26,7 +26,7 @@ logger.addHandler(handler)
 
 
 
-admin.site.register(CommodityCategory , MPTTModelAdmin)
+#admin.site.register(CommodityCategory , MPTTModelAdmin)
 
 
 admin.site.site_title = "疫情登记系统"
