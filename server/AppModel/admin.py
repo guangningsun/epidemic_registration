@@ -40,10 +40,10 @@ class UserInfoAdmin(ImportExportModelAdmin):
 # 用户管理
 @admin.register(UserInfo)
 class CheckInfoAdmin(ImportExportModelAdmin): 
-    list_display=['family_contact_name','tel_num','address','registerTime','status','family_member_num','family_member_id','name','gender','age','nation','id_num','tel_num','address','work_place','has_disease_radio','disease_name','medicine_name','has_take_medicine_radio','room','hotel']
-    search_fields =('family_contact_name','tel_num','address','registerTime','status','family_member_num','family_member_id','name','gender','age','nation','id_num','tel_num','address','work_place','has_disease_radio','disease_name','medicine_name','has_take_medicine_radio','room','hotel')
+    list_display=['family_contact_name','tel_num','address','registerTime','checkin_status','family_member_num','family_member_id','name','gender','age','nation','id_num','tel_num','address','work_place','has_disease_radio','disease_name','medicine_name','has_take_medicine_radio','room','hotel']
+    search_fields =('family_contact_name','tel_num','address','registerTime','checkin_status','family_member_num','family_member_id','name','gender','age','nation','id_num','tel_num','address','work_place','has_disease_radio','disease_name','medicine_name','has_take_medicine_radio','room','hotel')
     fieldsets = [
-       ('用户数据', {'fields': ['family_contact_name','tel_num','address','registerTime','status','family_member_num','family_member_id','name','gender','age','nation','id_num','tel_num','address','work_place','has_disease_radio','disease_name','medicine_name','has_take_medicine_radio','room','hotel'], 'classes': ['']}),
+       ('用户数据', {'fields': ['family_contact_name','tel_num','address','registerTime','checkin_status','family_member_num','family_member_id','name','gender','age','nation','id_num','tel_num','address','work_place','has_disease_radio','disease_name','medicine_name','has_take_medicine_radio','room','hotel'], 'classes': ['']}),
     ]
     list_per_page = 15
 
