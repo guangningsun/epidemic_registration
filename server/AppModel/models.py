@@ -11,7 +11,7 @@ from AppModel import *
 class CheckInfo(models.Model):
     family_contact_name = models.CharField(max_length=200,verbose_name='联系人姓名')
     tel_num = models.CharField(max_length=200,verbose_name='联系人电话')
-    address = models.CharField(max_length=200,verbose_name='联系人住址')
+    family_address = models.CharField(max_length=200,verbose_name='联系人住址')
     registerTime = models.CharField(max_length=200,verbose_name='注册时间')
     checkin_status = models.CharField(max_length=200,verbose_name='是否已分配')
     family_member_num = models.CharField(max_length=200,verbose_name='成员数量')
