@@ -181,7 +181,7 @@ SIMPLEUI_CONFIG = {
         'icon': 'fab fa-dashcube',
         'models': [{
             'name': '入住管理',
-            'url': 'AppModel/checkin/',
+            'url': 'AppModel/checkinfo/',
             'icon': 'fa fa-server'
         },{
             'name': '用户管理',
