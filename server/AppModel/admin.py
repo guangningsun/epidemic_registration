@@ -30,8 +30,8 @@ logger.addHandler(handler)
 @admin.register(CheckInfo)
 class UserInfoAdmin(ImportExportModelAdmin): 
     list_display=['id','nick_name','user_name','weixin_openid','phone_number','auth']
-    search_fields =('nick_name','user_name','weixin_openid','phone_number','auth')
-    fieldsets = [
+    search_fields=('nick_name','user_name','weixin_openid','phone_number','auth')
+    fieldsets=[
        ('用户数据', {'fields': ['nick_name','user_name','weixin_openid','phone_number','auth'], 'classes': ['']}),
     ]
     list_per_page = 15
@@ -41,8 +41,8 @@ class UserInfoAdmin(ImportExportModelAdmin):
 @admin.register(UserInfo)
 class CheckInfoAdmin(ImportExportModelAdmin): 
     list_display=['family_contact_name','family_tel_num','family_address','registerTime','checkin_status','family_member_num','family_member_id','name','gender','age','nation','id_num','tel_num','address','work_place','has_disease_radio','disease_name','medicine_name','has_take_medicine_radio','room','hotel']
-    search_fields =('family_contact_name','family_tel_num','family_address','registerTime','checkin_status','family_member_num','family_member_id','name','gender','age','nation','id_num','tel_num','address','work_place','has_disease_radio','disease_name','medicine_name','has_take_medicine_radio','room','hotel')
-    fieldsets = [
+    search_fields=('family_contact_name','family_tel_num','family_address','registerTime','checkin_status','family_member_num','family_member_id','name','gender','age','nation','id_num','tel_num','address','work_place','has_disease_radio','disease_name','medicine_name','has_take_medicine_radio','room','hotel')
+    fieldsets=[
        ('用户数据', {'fields': ['family_contact_name','family_tel_num','family_address','registerTime','checkin_status','family_member_num','family_member_id','name','gender','age','nation','id_num','tel_num','address','work_place','has_disease_radio','disease_name','medicine_name','has_take_medicine_radio','room','hotel'], 'classes': ['']}),
     ]
     list_per_page = 15
