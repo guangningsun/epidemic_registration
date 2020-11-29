@@ -110,7 +110,7 @@ def get_all_family_info(request):
             # 放进家庭数组    
             family_info_list.append(family_info)
         # 拼接返回json信息
-        res_json = {"error": 0,"msg": { family_info_list}}
+        res_json = {"error": 0,"msg": family_info_list }
         return Response(res_json)
 
 
