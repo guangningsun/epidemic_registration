@@ -76,7 +76,7 @@ def get_all_family_info(request):
         family_tel_num_all = CheckInfo.objects.values('family_tel_num').distinct()
         # 根据家庭手机列表拼接每个家庭的json数据
         for ftl in family_tel_num_all:
-            checkinset = CheckInfo.objects.filter(family_tel_num=flt)
+            checkinset = CheckInfo.objects.filter(family_tel_num=ftl['family_tel_num'])
             serializer = CheckinSerializer(checkinset, many=True)
             family_member_list_array = []
             for i in range (0,len(serializer.data)):
