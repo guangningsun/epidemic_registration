@@ -176,7 +176,7 @@ def create_family_info(request):
                 family_member_list = request.POST['family_member_list']
                 # 拿到家庭其他成员list
                 for family_member in json.loads(family_member_list):
-                    CheckInfo.objects.filter(id_num=id_num).update(
+                    CheckInfo.objects.filter(id_num=family_member["id_num"]).update(
                                         family_member_num = family_member_num,
                                         name = family_member["name"],
                                         gender = family_member["gender"],
