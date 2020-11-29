@@ -102,7 +102,7 @@ def get_all_family_info(request):
 @api_view(['GET'])
 def fuzzy_query(request,tel_num):
     if request.method == 'GET':
-        if tel_num.strip()!=""
+        if tel_num.strip()!="":
             checkinset = CheckInfo.objects.filter(family_tel_num__icontains=tel_num)
             serializer = CheckinSerializer(checkinset, many=True)
             family_member_list_array = []
