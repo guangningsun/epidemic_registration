@@ -48,8 +48,59 @@ def _generate_json_message(flag, message):
                             content_type='application/json',
                             )
 
+# 获取所有用户信息
+@api_view([ 'GET'])
+def get_all_family_info(request):
+    if request.method == 'GET':
+        # 定义家庭信息数组
+        family_info_list = []
+        # 获取家庭手机列表
+        family_tel_num_all = CheckInfo.objects.values('family_tel_num').distinct()
+        # 根据家庭手机列表拼接每个家庭的json数据
+        for ftl in family_tel_num_all:
+            checkinset = CheckInfo.objects.filter(family_tel_num=flt)
+            serializer = CheckinSerializer(checkinset, many=True)
+            family_member_list_array = []
+            for i in range (0,len(serializer.data)):
+                family_member_info = {}
+                family_member_info["name"] = serializer.data[i]["name"]
+                family_member_info["gender"] = serializer.data[i]["gender"]
+                family_member_info["age"] = serializer.data[i]["age"]
+                family_member_info["nation"] = serializer.data[i]["nation"]
+                family_member_info["id_num"] = serializer.data[i]["id_num"]
+                family_member_info["tel_num"] = serializer.data[i]["tel_num"]
+                family_member_info["address"] = serializer.data[i]["address"]
+                family_member_info["work_place"] = serializer.data[i]["work_place"]
+                family_member_info["has_disease_radio"] = serializer.data[i]["has_disease_radio"]
+                family_member_info["disease_name"] = serializer.data[i]["disease_name"]
+                family_member_info["medicine_name"] = serializer.data[i]["medicine_name"]
+                family_member_info["has_take_medicine_radio"] = serializer.data[i]["has_take_medicine_radio"]
+                family_member_info["room"] = serializer.data[i]["room"]
+                family_member_info["hotel"] = serializer.data[i]["hotel"]
+                family_member_list_array.append(family_member_info)
 
-# 完善用户信息
+            # 拼接家庭json
+            family_info = { "family_contact_name" :serializer.data[0]["family_contact_name"] ,
+                                        "tel_num" :serializer.data[0]["family_tel_num"] ,
+                                        "family_address" :serializer.data[0]["family_address"] ,
+                                        "registerTime" :serializer.data[0]["registerTime"] ,
+                                        "checkin_status" :serializer.data[0]["checkin_status"] ,
+                                        "family_member_num" :serializer.data[0]["family_member_num"] ,
+                                        "family_id": serializer.data[0]["family_id"],
+                                        "family_member_list": family_member_list_array 
+                                        } 
+            # 放进家庭数组    
+            family_info_list.append(family_info)
+        # 拼接返回json信息
+        res_json = {"error": 0,"msg": { family_info_list}}
+        return Response(res_json)
+
+
+
+
+
+
+# 创建入住用户信息
 @api_view([ 'POST'])
 def create_family_info(request):
     if request.method == 'POST':
@@ -124,10 +175,10 @@ def get_family_info(request,tel_num):
         res_json = {"error": 0,"msg": {
                     "family_info": { "family_contact_name" :serializer.data[0]["family_contact_name"] ,
                                      "tel_num" :serializer.data[0]["family_tel_num"] ,
-                                     "family_address" :serializer.data[0]["family_tel_num"] ,
-                                     "registerTime" :serializer.data[0]["family_tel_num"] ,
-                                     "checkin_status" :serializer.data[0]["family_tel_num"] ,
-                                     "family_member_num" :serializer.data[0]["family_tel_num"] ,
+                                     "family_address" :serializer.data[0]["family_address"] ,
+                                     "registerTime" :serializer.data[0]["registerTime"] ,
+                                     "checkin_status" :serializer.data[0]["checkin_status"] ,
+                                     "family_member_num" :serializer.data[0]["family_member_num"] ,
                                      "family_id": serializer.data[0]["family_id"],
                                      "family_member_list": family_member_list_array 
                                     } 

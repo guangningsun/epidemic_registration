@@ -17,5 +17,7 @@ urlpatterns = [
   
     path('get_family_info/<tel_num>', views.get_family_info),
     path('create_family_info/', views.create_family_info),
+    path('get_all_family_info/', views.get_all_family_info),
+    
 ] 
  
