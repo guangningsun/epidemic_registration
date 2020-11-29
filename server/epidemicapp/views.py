@@ -194,8 +194,8 @@ def create_family_info(request):
                                     disease_name = family_member["disease_name"],
                                     medicine_name = family_member["medicine_name"],
                                     has_take_medicine_radio = family_member["has_take_medicine_radio"],
-                                    room = "-",
-                                    hotel = "-",
+                                    room = "(未分配)",
+                                    hotel = "(未分配)",
                 )
                 checkin.save()
                 res_json = {"error": 0,"msg": {"创建入住信息成功"}}
