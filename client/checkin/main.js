@@ -119,11 +119,23 @@ Array.prototype.remove = function(val) {
 	}
 };
 
+Array.prototype.set = function(val, obj) {
+	console.log("index:====");
+	console.log(val);
+	if (val > -1) {
+		this.splice(val,1, obj);  // 第一个参数（起始位置），第二个参数（删除的项数），第三个参数（插入任意数量的项）
+	}
+};
+
 //判断字符是否为空的方法
 Vue.prototype.isEmpty = function(obj) {
 	if (typeof obj == "undefined" || obj == null || obj == "") {
 		return true;
 	} else {
+		var trim = obj.replace(/\s*/g,"");
+		if(trim == ""){
+			return true;
+		}
 		return false;
 	}
 }

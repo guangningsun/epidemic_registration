@@ -9,30 +9,21 @@
 			
 			// API 接口
 			api_login: 'weixin_sns/',
-			api_asset: 'asset/',
-			api_claim_asset: 'claim_asset/',
-			api_category: 'commoditycategory/',
-			api_approve: 'approval/',
 			api_getWXInfo: 'weixin_gusi/',
-			api_get_family_info:'get_family_info/',
-			api_change_approval_status:'change_approval_status/',
-			api_get_apartment_list:'get_category/',
-			api_submit_user_info:'submit_user_info/',
-			api_get_supplier:'get_supplier/',
 			get_user_info:'get_user_info_by_wxid/',
-			get_apartment_balance:'get_category_surplus/',
-			get_asset_by_cname:'asset_by_cname/',
-			get_submit_order:'submit_order/',
-			get_all_order_info_list:'get_all_order_info_list/',
+			api_get_family_info:'get_family_info/',
+			api_create_family_info:'create_family_info/',
+			api_update_family_info:'update_family_info/',
+			api_get_all_family_info:'get_all_family_info/',
 			
 			//global
-			cart_list_info: [],
+			member_list_info: [],  // 保存家庭成员列表
 			
 			// key 值
-			key_family_num:'family_num',
-			key_tel:'tel_num',
-			key_family_contact:'family_contact',
-			key_address:'address',
+			key_family_num:'key_family_num',
+			key_tel:'key_tel_num',
+			key_family_contact:'key_family_contact',
+			key_address:'key_address',
 			key_user_head:'key_user_head',
 			key_user_nickname:'key_user_nickname',
 			key_phone_num:'key_phone_num',

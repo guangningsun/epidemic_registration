@@ -76,12 +76,30 @@ export default {
 			family_num: 0,
 			btn_disabled: true,
 			
+			family_info:""
 		};
 	},
 
-	onLoad() {
-		// this.requestApartment();
-		// this.tel_num = uni.getStorageSync(getApp().globalData.key_phone_num);
+	onLoad(option) {
+		this.tel_num = uni.getStorageSync(getApp().globalData.key_phone_num);
+		
+		console.log(option)
+		if(option.familyInfo !== undefined){
+			let info = JSON.parse(decodeURIComponent(option.familyInfo));
+			this.family_info = info;
+			console.log(this.family_info);
+			
+			this.family_contact = this.family_info.family_contact_name;
+			this.tel_num = this.family_info.tel_num;
+			this.address = this.family_info.family_address;
+			this.family_num = this.family_info.family_member_num;
+			
+			this.index = this.picker.indexOf(this.family_num);
+			
+			getApp().globalData.member_list_info = this.family_info.family_member_list;
+			
+			this.checkBtnEnable();
+		}
 	},
 
 	methods: {
@@ -123,6 +141,13 @@ export default {
 			uni.navigateTo({
 				url:'./suspected_family_member_list'
 			})
+			
+			console.log("=====");
+			console.log(uni.getStorageSync(getApp().globalData.key_family_contact));
+			console.log(uni.getStorageSync(getApp().globalData.key_tel));
+			console.log(uni.getStorageSync(getApp().globalData.key_address));
+			console.log( uni.getStorageSync(getApp().globalData.key_family_num));
+			console.log("======")
 			
 			// let params = {
 			// 	openid: uni.getStorageSync(getApp().globalData.key_wx_openid),

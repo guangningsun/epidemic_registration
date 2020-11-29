@@ -114,7 +114,7 @@
 						</view>
 					</radio-group>
 					
-					<view class="cu-form-group" v-show="has_disease_radio === '有'">
+					<view class="cu-form-group" v-show="has_disease_radio == '有'">
 						<text class="title">病史</text>
 						<picker @change="DiseasePickerChange" :value="disease_index" :range="disease_list">
 							<view class="picker">
@@ -146,7 +146,7 @@
 						</view>
 					</radio-group>
 					
-					<view class="cu-form-group" v-show="has_take_medicine_radio === '有'">
+					<view class="cu-form-group" v-show="has_take_medicine_radio == '有'">
 						<text class="title">使用药物</text>
 						<input
 							placeholder="请输入药物"
@@ -176,7 +176,7 @@ export default {
 		return {
 			name:"",
 			gender:"",
-			age:0,
+			age:'',
 			
 			nation:"",
 			nation_index:-1,
@@ -200,26 +200,68 @@ export default {
 			medicine_name:"",
 			has_take_medicine_radio:"",
 			
+			btn_disabled:true,
+			
+			member_index:""   ,//在member列表中的位置
+			
 		};
 	},
 
-	onLoad() {
+	onLoad(option) {
 		this.address = uni.getStorageSync(getApp().globalData.key_address);
+		
+		console.log(option)
+		if(option.member_index !== undefined){
+			this.member_index = option.member_index;
+			console.log("member_index:===");
+			console.log(this.member_index);
+			
+			var target = getApp().globalData.member_list_info[this.member_index];
+			console.log(target);
+			if(!this.isEmpty(target.name)){
+				this.name = target.name;
+				this.gender = target.gender;
+				this.age = target.age;
+				this.nation = target.nation;
+				this.id_num = target.id_num;
+				this.tel_num = target.tel_num;
+				this.address = target.address;
+				this.work_place = target.work_place;
+				this.has_disease_radio = target.has_disease_radio ? '有' : '无';
+				this.disease_name = target.disease_name;
+				this.has_take_medicine_radio = target.has_take_medicine_radio ? '有' : '无';
+				this.medicine_name = target.medicine_name;
+				
+				this.nation_index = this.nation_list.indexOf(this.nation);
+				this.disease_index = this.disease_list.indexOf(this.disease_name);
+				
+				this.checkBtnEnable();
+			}
+		}
 	},
 
 	methods: {
 		RadioChange(e) {
 			this.gender = e.detail.value
 			console.log(this.gender)
+			this.checkBtnEnable();
 		},
 		
 		HasDiseaseRadioChange(e){
 			this.has_disease_radio = e.detail.value;
 			console.log(this.has_disease_radio)
+			if(this.has_disease_radio == '无'){
+				this.disease_name = "";
+			}
+			this.checkBtnEnable()
 		},
 		HasTakeMedicineRadioChange(e){
 			this.has_take_medicine_radio = e.detail.value;
 			console.log(this.has_take_medicine_radio)
+			if(this.has_take_medicine_radio == '无'){
+				this.medicine_name = "";
+			}
+			this.checkBtnEnable()
 		},
 		
 		DiseasePickerChange(e){
@@ -231,7 +273,7 @@ export default {
 			}
 			this.disease_name = this.disease_list[this.disease_index];
 
-			if(this.disease_name === '其他'){
+			if(this.disease_name == '其他'){
 				this.should_show_other_disease = true;
 				this.disease_name = '';
 			}
@@ -252,14 +294,14 @@ export default {
 			this.nation = this.nation_list[this.nation_index];
 				
 			console.log(this.nation);
-
+			this.checkBtnEnable();
 		},
 		
 
 		////////////////////
 
 		checkBtnEnable() {
-			console.log(this.family_num);
+			// console.log(this.family_num);
 			if (
 				this.isEmpty(this.name) ||
 				this.isEmpty(this.gender) ||
@@ -270,23 +312,43 @@ export default {
 				this.isEmpty(this.has_disease_radio) ||
 				this.isEmpty(this.address) ||
 				this.isEmpty(this.work_place) ||
-				this.isEmpty(this.has_take_medicine_radio)
-
+				this.isEmpty(this.has_take_medicine_radio) ||
+				((this.has_disease_radio == '有' && this.isEmpty(this.disease_name)
+					|| (this.has_take_medicine_radio == '有' && this.isEmpty(this.medicine_name)) ))
 			) {
 				this.btn_disabled = true;
-			} else {
-				this.btn_disabled = false;
+			} else{
+				this.btn_disabled = false
 			}
+			console.log(this.btn_disabled)
 		},
+		
 		onSubmit(){
 			
-			uni.setStorageSync(getApp().globalData.key_family_num,this.family_num);
-			uni.setStorageSync(getApp().globalData.key_address,this.address);
-			uni.setStorageSync(getApp().globalData.key_tel,this.tel_num);
-			uni.setStorageSync(getApp().globalData.key_family_contact,this.family_contact);
+			var member = {
+				name:this.name,
+				gender:this.gender,
+				age:this.age,
+				nation:this.nation,
+				id_num:this.id_num,
+				tel_num:this.tel_num,
+				address:this.address,
+				work_place:this.work_place,
+				has_disease_radio:this.has_disease_radio == '有' ? true : false,
+				disease_name:this.disease_name,
+				has_take_medicine_radio:this.has_take_medicine_radio == '有' ? true : false,
+				medicine_name:this.medicine_name,
+			};
+			
+			console.log(getApp().globalData.member_list_info);
+			if(getApp().globalData.member_list_info.length > this.member_index){
+				getApp().globalData.member_list_info.set(this.member_index, member)
+			}
+			
+			console.log(getApp().globalData.member_list_info);
 			
 			uni.navigateTo({
-				url:'suspected_family_info'
+				url:'suspected_family_member_list'
 			})
 			
 			// let params = {

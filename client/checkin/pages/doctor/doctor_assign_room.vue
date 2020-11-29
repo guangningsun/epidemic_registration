@@ -6,7 +6,7 @@
 		
 		<view class="cu-bar bg-white" style="min-height: 100upx;">
 			<view class='margin-left title text-xl text-bold'>
-				{{family_contact}}的家庭
+				{{family_info.family_contact_name}}的家庭
 			</view>
 		</view>
 		
@@ -16,14 +16,14 @@
 					<view class="cu-item padding-left" style="height: 220upx;">
 						<view
 							class="cu-avatar lg margin-left-sm bg-white"
-							:style="'background-image:url(../../static/defaultHead.png);'"
+							:style="item.gender == undefined || item.gender == null || item.gender == '' ? 'background-image:url(../../static/defaultHead.png);' : item.gender == '男' ? 'background-image:url(../../static/head-m.png);' : 'background-image:url(../../static/head-f.png);'"
 						></view>
 						<view class="content4" style="width: calc(100% - 220upx);">
 							<view class="flex justify-between">
 								<view class="title text-lg text-bold">{{item.name}}</view>
 							</view>
 							<view class="text-grey ">
-								基本信息（待填写）
+								{{item.gender + ' | ' + item.age + '岁 | ' + item.tel_num}}
 							</view>
 							<view class="solid margin-top-sm">
 								<input
@@ -32,7 +32,7 @@
 									name="input"
 									class="text-left"
 									@input="checkBtnEnable"
-									v-model="item.room"
+									v-model="item.room == '(未分配)' || item.room == '-' ? '' : item.room"
 								/>
 							</view>
 						</view>
@@ -55,34 +55,34 @@
 export default {
 	data() {
 		return {
-			member_list:[1,2],
-			family_meneber_num : 0
+			member_list:[],
+			family_member_num : 0,
+			family_info:"",
 		};
 	},
 
-	onLoad() {
-		// this.family_meneber_num = uni.getStorageSync(getApp().globalData.key_family_num);
-		// for(var i = 0; i < this.family_meneber_num; i++){
-		// 	var memberInfo = {
-		// 		name:"",
-		// 		gender:"",
-		// 		age:0,
-		// 		nation:"",
-		// 		id_num:"",
-		// 		tel_num:"",
-		// 		address:uni.getStorageSync(getApp().globalData.key_address),
-		// 		work_place:"",
-				
-		// 		has_disease_radio:"",
-		// 		disease_index:-1,
-		// 		disease_name:"",
-		// 		should_show_other_disease:false,
-				
-		// 		medicine_name:"",
-		// 		has_take_medicine_radio:""
-		// 	}
-		// 	this.member_list.push(memberInfo);
-		// }
+	onLoad(option) {
+		if(option.familyInfo !== undefined){
+			console.log(option.familyInfo);
+			let info = JSON.parse(option.familyInfo);
+			this.family_info = info;
+			console.log('====');
+			console.log(this.family_info);
+			this.member_list = this.family_info.family_member_list;
+			console.log('=====____')
+			console.log(this.member_list);
+			
+			// this.family_contact = this.family_info.family_contact_name;
+			// this.tel_num = this.family_info.tel_num;
+			// this.address = this.family_info.family_address;
+			// this.family_num = this.family_info.family_member_num;
+			
+			// this.index = this.picker.indexOf(this.family_num);
+			
+			// getApp().globalData.member_list_info = this.family_info.family_member_list;
+			
+			// this.checkBtnEnable();
+		}
 	},
 
 	methods: {

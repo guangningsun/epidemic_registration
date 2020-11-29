@@ -6,7 +6,8 @@
 
 		<scroll-view scroll-x class="bg-white nav text-center">
 			<view class="cu-item" :class="index==TabCur?'text-blue cur':''" v-for="(item,index) in tabTitle" :key="index" @tap="tabSelect" :data-id="index">
-				{{tabTitle[index]}}({{index == 0 ? allNum : notYetNum}})
+				<!-- {{tabTitle[index]}}({{index == 0 ? allNum : notYetNum}}) -->
+				{{tabTitle[index]}}
 			</view>
 		</scroll-view>
 		
@@ -20,18 +21,18 @@
 			</view>
 		</view>
 		
-		<view class="cu-card card-margin" style="margin-bottom: -30upx;" v-for="(item,index) in family_list" :key="index">
+		<view class="cu-card card-margin" style="margin-bottom: -30upx;" v-for="(item,index) in family_list" :key="index" @tap="goToAssignRoom(item,index)">
 			<view class="cu-item">
 				<view class="flex justify-between">
-					<view class="flex align-center text-left margin-top-sm margin-left-sm text-gray" style="width: 100%;">{{item.register_time}}</view>
-					<view class="cu-tag radius bg-green">{{item.status}}</view>
+					<view class="flex align-center text-left margin-top-sm margin-left-sm text-gray" style="width: 100%;">{{item.registerTime}}</view>
+					<view class="cu-tag radius bg-green">{{item.checkin_status}}</view>
 				</view>
 				<view class="flex">
 					<image class="margin" :src="'../../static/home.png'" style="width: 100upx; height: 100upx;"></image>
 					<view class="margin-top-sm">
 						<view class="text-bold">{{item.family_contact_name}}的家庭</view>
 						<view>家庭人数: {{item.family_member_num}}</view>
-						<view>家庭住址: {{item.address}}</view>
+						<view>家庭住址: {{item.family_address}}</view>
 					</view>
 				</view>
 			</view>
@@ -52,12 +53,12 @@ export default {
 			allNum:40,
 			notYetNum:10,
 			
-			family_list:[1,2]
+			family_list:[]
 		};
 	},
 
 	onLoad() {
-		// this.requestApartment();
+		this.requestAllFamilyInfo();
 		// this.tel_num = uni.getStorageSync(getApp().globalData.key_phone_num);
 	},
 
@@ -68,33 +69,40 @@ export default {
 			
 		},
 		
-		// requestApartment() {
-		// 	this.requestWithMethod(
-		// 		getApp().globalData.api_get_apartment_list,
-		// 		'GET',
-		// 		'',
-		// 		this.successCb,
-		// 		this.failCb,
-		// 		this.completeCb
-		// 	);
-		// },
-		// successCb(rsp) {
-		// 	if (rsp.data.error === 0) {
-		// 		this.apartment_info_list = rsp.data.msg.category_info;
-		// 		console.log(this.apartment_info_list);
+		goToAssignRoom(e, index){
+			
+			uni.navigateTo({
+				url: 'doctor_assign_room?familyInfo=' + JSON.stringify(e)
+			})
+		},
+		
+		requestAllFamilyInfo() {
+			this.requestWithMethod(
+				getApp().globalData.api_get_all_family_info,
+				'GET',
+				'',
+				this.successCb,
+				this.failCb,
+				this.completeCb
+			);
+		},
+		successCb(rsp) {
+			if (rsp.data.error === 0) {
+				this.family_list = rsp.data.msg;
+				console.log(this.family_list);
 
-		// 		var apartments = this.apartment_picker;
-		// 		this.apartment_info_list.map(function(item) {
-		// 			apartments.push(item.name);
-		// 		});
-		// 		console.log("==apart==");
-		// 		console.log(apartments);
-		// 	}
-		// },
-		// failCb(err) {
-		// 	console.log('api_apartment_list failed', err);
-		// },
-		// completeCb(rsp) {},
+				// var apartments = this.apartment_picker;
+				// this.apartment_info_list.map(function(item) {
+				// 	apartments.push(item.name);
+				// });
+				// console.log("==apart==");
+				// console.log(apartments);
+			}
+		},
+		failCb(err) {
+			console.log('api_get_all_family_info failed', err);
+		},
+		completeCb(rsp) {},
 
 		// ////////////////////
 

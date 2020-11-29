@@ -5,7 +5,7 @@
 		</cu-custom>
 
 		<view class="cu-card">
-			<view class="flex align-center cu-item bg-gradual-dark-green padding-sm">
+			<view class="flex align-center cu-item bg-gradual-light-blue padding-sm">
 				<view class="flex justify-between">
 					<view class="flex align-center text-left margin-top-sm margin-left-xl text-gray" style="width: 100%;"></view>
 					<view class="cu-tag radius bg-olive">{{familyInfo.checkin_status}}</view>
@@ -21,9 +21,9 @@
 						</view>
 					</view>
 					<view class="flex-twice">
-						<view class=" flex text-white text-lg margin-left-sm margin-top-xl">
+						<view class=" flex text-dark-gray text-lg margin-left-sm margin-top-xl">
 							<view>
-								<view class="margin-bottom-xs">{{familyInfo.family_contact_name}}的家庭</view>
+								<view class="text-bold margin-bottom-xs">{{familyInfo.family_contact_name}}的家庭</view>
 								<view>家庭号：{{familyInfo.family_id}}</view>
 								<view>{{familyInfo.family_address}}</view>
 							</view>
@@ -33,7 +33,7 @@
 				
 				<view class="flex justify-end padding-sm margin-xs radius">
 					<button
-						class="cu-btn cuIcon-writefill bg-gradual-blue margin-right-xs margin-bottom-sx"
+						class="cu-btn cuIcon-writefill shadow bg-cyan margin-right-xs margin-bottom-sx"
 						@tap="onGoToFamilyModify"
 					>
 						更新家庭信息
@@ -43,7 +43,7 @@
 		</view>
 		
 		<view class=" text-gray flex justify-center">
-			———————— 成员分配情况 ————————
+			-------- 成员分配情况 --------
 		</view>
 		
 		<view class="cu-card" v-for="(item, index) in member_list" :key="index" @tap="goToModifyInfo(item)">
@@ -86,11 +86,9 @@ export default {
 
 	onLoad() {
 		// let nickname = uni.getStorageSync('key_user_nickname');
-		let tel = uni.getStorageSync('key_phone_num');
+		let tel = uni.getStorageSync(getApp().globalData.key_tel);
 		this.tel_num = tel;
 		
-		//测试
-		this.tel_num = 138111;
 	},
 
 	onShow() {
@@ -100,9 +98,15 @@ export default {
 	methods: {		
 		
 		onGoToFamilyModify(e){
+			
+			// uni.navigateTo({
+			// 	url: 'suspected_family_member_list?memberListInfo=' + encodeURIComponent(JSON.stringify(this.member_list))
+			// })
+			
 			uni.navigateTo({
-				url:'./suspected_family_member_list'
+				url: 'suspected?familyInfo=' + JSON.stringify(this.familyInfo)
 			})
+
 		},
 		
 		successCb(rsp) {

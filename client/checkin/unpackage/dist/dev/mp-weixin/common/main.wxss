@@ -3462,8 +3462,8 @@ scroll-view.cu-steps .cu-item {
 	color: #ffffff;
 }
 .bg-gradual-light-blue {
-	background-image: -webkit-linear-gradient(45deg, #a1ccf7, #70afff);
-	background-image: linear-gradient(45deg, #a1ccf7, #70afff);
+	background-image: -webkit-linear-gradient(45deg, #a1ccf7, #c8e4fb);
+	background-image: linear-gradient(45deg, #a1ccf7, #c8e4fb);
 	color: #ffffff;
 }
 .bg-gradual-green {
@@ -3484,6 +3484,11 @@ scroll-view.cu-steps .cu-item {
 .bg-gradual-blue {
 	background-image: -webkit-linear-gradient(45deg, #0081ff, #1cbbb4);
 	background-image: linear-gradient(45deg, #0081ff, #1cbbb4);
+	color: #ffffff;
+}
+.bg-gradual-light-blue {
+	background-image: -webkit-linear-gradient(45deg, #a5d0fa, #bbdffd);
+	background-image: linear-gradient(45deg, #a5d0fa, #bbdffd);
 	color: #ffffff;
 }
 .bg-gradual-light-green {
@@ -3745,6 +3750,11 @@ scroll-view.cu-steps .cu-item {
 .line-dark-blue,
 .lines-dark-blue {
 	color: #094484;
+}
+.text-dark-gray,
+.line-dark-gray,
+.lines-dark-gray {
+	color: #313131;
 }
 .text-purple,
 .line-purple,
