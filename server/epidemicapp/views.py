@@ -48,6 +48,24 @@ def _generate_json_message(flag, message):
                             content_type='application/json',
                             )
 
+# 更新入住用户信息
+@api_view(['POST'])
+def update_family_info(request):
+    if request.method == 'POST':
+        try:
+            tel_num = request.POST['tel_num']
+            room = request.POST['room']
+            hotel = request.POST['hotel']
+            checkin_status = "已分配" # 0未分配 1已分配
+            CheckInfo.objects.filter(tel_num=tel_num).update(room=room,hotel=hotel,checkin_status=checkin_status)
+            res_json = {"error": 0,"msg": {"更新入住信息成功"}}
+            return Response(res_json)
+        except:
+            res_json = {"error": 1,"msg": {"更新入住信息失败"}}
+            return Response(res_json)
+
+
+
 # 获取所有用户信息
 @api_view([ 'GET'])
 def get_all_family_info(request):
@@ -96,8 +114,6 @@ def get_all_family_info(request):
         return Response(res_json)
 
 
-
-
 # 通过手机号模糊查询家庭信息
 @api_view(['GET'])
 def fuzzy_query(request,tel_num):
@@ -139,9 +155,6 @@ def fuzzy_query(request,tel_num):
         else:
             res_json = {"error": 1,"msg": "查询内容为空"}
             return Response(res_json)
-
-
-
 
 
 # 创建入住用户信息
@@ -190,6 +203,7 @@ def create_family_info(request):
         except:
             res_json = {"error": 1,"msg": {"创建入住信息失败"}}
             return Response(res_json)
+
 
 # 获取家庭信息
 @api_view(['GET', 'POST'])
@@ -286,6 +300,7 @@ def weixin_sns(request,js_code):
         else:
             return Response(_generate_json_message(False,"code 无效"))
         # return HttpResponse(json.dumps(json.loads(req.content)),content_type='application/json',)
+
 
 # weixin 获取用户信息
 @api_view(['POST'])
