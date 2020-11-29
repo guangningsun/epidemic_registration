@@ -54,20 +54,46 @@ def _generate_json_message(flag, message):
 def create_family_info(request):
     if request.method == 'POST':
         # 收到所有家庭登记参数
-        openid = request.POST['openid']
         # 拆分公共参数部分
-        # 拿到家庭其他成员list
-        # 对其他成员list进行save操作，自动生成family id 生成创建注册时间
         try:
-            userinfo = UserInfo.objects.get(weixin_openid=openid)
-            userinfo.nick_name=nickname
-            userinfo.user_name=username
-            userinfo.address=address
-            userinfo.save()
-            res_json = {"error": 0,"msg": {"更新用户信息成功"}}
-            return Response(res_json)
+            family_contact_name = request.POST['family_contact_name']
+            family_tel_num = request.POST['family_tel_num']
+            family_address = request.POST['family_address']
+            registerTime= datetime.datetime.strptime(string,'%Y-%m-%d %H:%M:%S')
+            # 对其他成员list进行save操作，自动生成family id 生成创建注册时间
+            checkin_status = "未分配" # 0未分配 1已分配
+            family_member_num = request.POST['family_member_num']
+            family_id = time.time()
+            family_member_list = request.POST['family_member_list']
+            # 拿到家庭其他成员list
+            for family_member in json.loads(family_member_list):
+                checkin = CheckInfo(family_contact_name=family_contact_name,
+                                    family_tel_num = family_tel_num,
+                                    family_address = family_address,
+                                    registerTime =registerTime,
+                                    checkin_status =checkin_status,
+                                    family_member_num = family_member_num,
+                                    family_id = family_id,
+                                    name = family_member["name"],
+                                    gender = family_member["gender"],
+                                    age = family_member["age"],
+                                    nation = family_member["nation"],
+                                    id_num = family_member["id_num"],
+                                    tel_num = family_member["tel_num"],
+                                    address = family_member["address"],
+                                    work_place = family_member["work_place"],
+                                    has_disease_radio = family_member["has_disease_radio"],
+                                    disease_name = family_member["disease_name"],
+                                    medicine_name = family_member["medicine_name"],
+                                    has_take_medicine_radio = family_member["has_take_medicine_radio"],
+                                    room = family_member["room"],
+                                    hotel = family_member["hotel"],
+                )
+                checkin.save()
+                res_json = {"error": 0,"msg": {"创建入住信息成功"}}
+                return Response(res_json)
         except:
-            res_json = {"error": 1,"msg": {"更新用户信息失败"}}
+            res_json = {"error": 1,"msg": {"创建入住信息失败"}}
             return Response(res_json)
 
 # 获取家庭信息
