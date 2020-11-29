@@ -53,11 +53,11 @@ def _generate_json_message(flag, message):
 def update_family_info(request):
     if request.method == 'POST':
         try:
-            tel_num = request.POST['tel_num']
+            id_num = request.POST['id_num']
             room = request.POST['room']
             hotel = request.POST['hotel']
             checkin_status = "已分配" # 0未分配 1已分配
-            CheckInfo.objects.filter(tel_num=tel_num).update(room=room,hotel=hotel,checkin_status=checkin_status)
+            CheckInfo.objects.filter(id_num=id_num).update(room=room,hotel=hotel,checkin_status=checkin_status)
             res_json = {"error": 0,"msg": {"更新入住信息成功"}}
             return Response(res_json)
         except:
@@ -166,38 +166,74 @@ def create_family_info(request):
         try:
             family_contact_name = request.POST['family_contact_name']
             family_tel_num = request.POST['family_tel_num']
-            family_address = request.POST['family_address']
-            registerTime= datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-            # 对其他成员list进行save操作，自动生成family id 生成创建注册时间
-            checkin_status = "未分配" # 0未分配 1已分配
-            family_member_num = request.POST['family_member_num']
-            family_id = int(time.time())
-            family_member_list = request.POST['family_member_list']
-            # 拿到家庭其他成员list
-            for family_member in json.loads(family_member_list):
-                checkin = CheckInfo(family_contact_name=family_contact_name,
-                                    family_tel_num = family_tel_num,
-                                    family_address = family_address,
-                                    registerTime =registerTime,
-                                    checkin_status =checkin_status,
-                                    family_member_num = family_member_num,
-                                    family_id = family_id,
-                                    name = family_member["name"],
-                                    gender = family_member["gender"],
-                                    age = family_member["age"],
-                                    nation = family_member["nation"],
-                                    id_num = family_member["id_num"],
-                                    tel_num = family_member["tel_num"],
-                                    address = family_member["address"],
-                                    work_place = family_member["work_place"],
-                                    has_disease_radio = family_member["has_disease_radio"],
-                                    disease_name = family_member["disease_name"],
-                                    medicine_name = family_member["medicine_name"],
-                                    has_take_medicine_radio = family_member["has_take_medicine_radio"],
-                                    room = "(未分配)",
-                                    hotel = "(未分配)",
-                )
-                checkin.save()
+            # 检查该手机号用户是否存在，如果存在则更新
+            ci = CheckInfo.objects.filter(family_tel_num=family_tel_num)
+            if ci.exists():
+                family_address = request.POST['family_address']
+                registerTime= datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                # 对其他成员list进行save操作，自动生成family id 生成创建注册时间
+                checkin_status = "未分配" # 0未分配 1已分配
+                family_member_num = request.POST['family_member_num']
+                family_id = int(time.time())
+                family_member_list = request.POST['family_member_list']
+                # 拿到家庭其他成员list
+                for family_member in json.loads(family_member_list):
+                    CheckInfo.objects.filter(id_num=id_num).update(family_contact_name=family_contact_name,
+                                        family_tel_num = family_tel_num,
+                                        family_address = family_address,
+                                        registerTime =registerTime,
+                                        checkin_status =checkin_status,
+                                        family_member_num = family_member_num,
+                                        family_id = family_id,
+                                        name = family_member["name"],
+                                        gender = family_member["gender"],
+                                        age = family_member["age"],
+                                        nation = family_member["nation"],
+                                        id_num = family_member["id_num"],
+                                        tel_num = family_member["tel_num"],
+                                        address = family_member["address"],
+                                        work_place = family_member["work_place"],
+                                        has_disease_radio = family_member["has_disease_radio"],
+                                        disease_name = family_member["disease_name"],
+                                        medicine_name = family_member["medicine_name"],
+                                        has_take_medicine_radio = family_member["has_take_medicine_radio"],
+                                        room = "(未分配)",
+                                        hotel = "(未分配)",
+                    )
+                    checkin.save()
+            else:
+                family_address = request.POST['family_address']
+                registerTime= datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                # 对其他成员list进行save操作，自动生成family id 生成创建注册时间
+                checkin_status = "未分配" # 0未分配 1已分配
+                family_member_num = request.POST['family_member_num']
+                family_id = int(time.time())
+                family_member_list = request.POST['family_member_list']
+                # 拿到家庭其他成员list
+                for family_member in json.loads(family_member_list):
+                    checkin = CheckInfo(family_contact_name=family_contact_name,
+                                        family_tel_num = family_tel_num,
+                                        family_address = family_address,
+                                        registerTime =registerTime,
+                                        checkin_status =checkin_status,
+                                        family_member_num = family_member_num,
+                                        family_id = family_id,
+                                        name = family_member["name"],
+                                        gender = family_member["gender"],
+                                        age = family_member["age"],
+                                        nation = family_member["nation"],
+                                        id_num = family_member["id_num"],
+                                        tel_num = family_member["tel_num"],
+                                        address = family_member["address"],
+                                        work_place = family_member["work_place"],
+                                        has_disease_radio = family_member["has_disease_radio"],
+                                        disease_name = family_member["disease_name"],
+                                        medicine_name = family_member["medicine_name"],
+                                        has_take_medicine_radio = family_member["has_take_medicine_radio"],
+                                        room = "(未分配)",
+                                        hotel = "(未分配)",
+                    )
+                    checkin.save()
             res_json = {"error": 0,"msg": {"创建入住信息成功"}}
             return Response(res_json)
         except:
