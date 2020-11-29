@@ -49,6 +49,26 @@ def _generate_json_message(flag, message):
                             )
 
 
+# 完善用户信息
+@api_view([ 'POST'])
+def create_family_info(request):
+    if request.method == 'POST':
+        # 收到所有家庭登记参数
+        openid = request.POST['openid']
+        # 拆分公共参数部分
+        # 拿到家庭其他成员list
+        # 对其他成员list进行save操作，自动生成family id 生成创建注册时间
+        try:
+            userinfo = UserInfo.objects.get(weixin_openid=openid)
+            userinfo.nick_name=nickname
+            userinfo.user_name=username
+            userinfo.address=address
+            userinfo.save()
+            res_json = {"error": 0,"msg": {"更新用户信息成功"}}
+            return Response(res_json)
+        except:
+            res_json = {"error": 1,"msg": {"更新用户信息失败"}}
+            return Response(res_json)
 
 # 获取家庭信息
 @api_view(['GET', 'POST'])
@@ -134,7 +154,8 @@ def weixin_sns(request,js_code):
                 # 增加用户是否已登录
                 is_login = "1"
                 user_auth = userinfo.auth
-            except WeixinSessionKey.DoesNotExist:
+            #except WeixinSessionKey.DoesNotExist:
+            except :
                 cwsk = WeixinSessionKey(weixin_openid=openid,weixin_sessionkey=session_key)
                 cwsk.save()
                 is_login = "0"
