@@ -167,7 +167,7 @@ def create_family_info(request):
             family_contact_name = request.POST['family_contact_name']
             family_tel_num = request.POST['family_tel_num']
             family_address = request.POST['family_address']
-            registerTime= datetime.datetime.strptime(string,'%Y-%m-%d %H:%M:%S')
+            registerTime= datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             # 对其他成员list进行save操作，自动生成family id 生成创建注册时间
             checkin_status = "未分配" # 0未分配 1已分配
             family_member_num = request.POST['family_member_num']
@@ -194,8 +194,8 @@ def create_family_info(request):
                                     disease_name = family_member["disease_name"],
                                     medicine_name = family_member["medicine_name"],
                                     has_take_medicine_radio = family_member["has_take_medicine_radio"],
-                                    room = family_member["room"],
-                                    hotel = family_member["hotel"],
+                                    room = "-",
+                                    hotel = "-",
                 )
                 checkin.save()
                 res_json = {"error": 0,"msg": {"创建入住信息成功"}}
