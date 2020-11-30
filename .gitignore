@@ -57,4 +57,3 @@ releasenotes/build
 
 server/AppModel/migrations/*
 server/media/*
-!server/media/qrcode/

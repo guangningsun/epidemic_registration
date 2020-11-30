@@ -56,8 +56,16 @@ def update_family_info(request):
             id_num = request.POST['id_num']
             room = request.POST['room']
             hotel = request.POST['hotel']
+            currenttime = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             checkin_status = "已分配" # 0未分配 1已分配
             CheckInfo.objects.filter(id_num=id_num).update(room=room,hotel=hotel,checkin_status=checkin_status)
+            # 通知户主房间已分配
+            try:
+                ci  = CheckInfo.objects.get(id_num=id_num)
+                ui = UserInfo.objects.get(phone_number = ci.family_tel_num)
+                ret1 = __weixin_send_message(ui.weixin_openid, currenttime ,room ,checkin_status,"入住已分配")
+            except:
+                pass
             res_json = {"error": 0,"msg": {"更新入住信息成功"}}
             return Response(res_json)
         except:
@@ -359,7 +367,7 @@ def weixin_gusi(request):
             pass
 
 
-def __weixin_send_message(touser,date3,thing6,phrase1):
+def __weixin_send_message(touser,date3,thing6,phrase1,name1):
     # get access token
     APPID = cf.get("WEIXIN", "weixin_appid")
     SECRET = cf.get("WEIXIN", "weixin_secret")
@@ -375,11 +383,14 @@ def __weixin_send_message(touser,date3,thing6,phrase1):
                 "date3": {
                     "value": date3
                 },
-                "thing6":{
+                "thing4":{
                     "value": thing6
                 },
-                "phrase1":{
+                "phrase2":{
                     "value": phrase1
+                },
+                "name1":{
+                    "value": name1
                 }
             }
 
