@@ -20,6 +20,7 @@ import time, datetime
 import requests,configparser
 from AppModel.WXBizDataCrypt import WXBizDataCrypt 
 from django.conf import settings
+from django.db.models import Max 
 
 
 logger = logging.getLogger(__name__)
@@ -207,7 +208,7 @@ def create_family_info(request):
                 checkin_status = "未分配" # 0未分配 1已分配
                 family_member_num = request.POST['family_member_num']
                 # family_id = int(time.time())
-                family_id = (("A%s") % ( CheckInfo.objects.all().aggregate(Max('id'))+1)
+                family_id = (("A%s") % ( CheckInfo.objects.all().aggregate(Max('id'))["id__max"]+1))
                 family_member_list = request.POST['family_member_list']
                 # 拿到家庭其他成员list
                 for family_member in json.loads(family_member_list):
