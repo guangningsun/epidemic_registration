@@ -167,6 +167,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 var _default =
 {
   data: function data() {
@@ -281,6 +283,13 @@ var _default =
       if (rsp.data.error === 0) {
         uni.showToast({
           title: '提交成功' });
+
+        uni.requestSubscribeMessage({
+          tmplIds: ['UUIzbUHXPhqQC5S3ujtGVE-5uta4PPTAilKewh9sf9o'],
+          success: function success(res) {
+            console.log('subscribe msg: ');
+            console.log(res);
+          } });
 
         uni.navigateTo({
           url: './family_index' });

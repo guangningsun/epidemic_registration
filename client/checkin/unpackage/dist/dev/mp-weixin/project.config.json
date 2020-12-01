@@ -9,24 +9,32 @@
   "compileType": "miniprogram",
   "libVersion": "",
   "appid": "wx181045b78530d9a6",
-  "projectname": "checkin",
+  "projectname": "信息录入登记",
+  "simulatorType": "wechat",
+  "simulatorPluginLibVersion": {},
   "condition": {
-    "plugin": {
+    "search": {
+      "list": []
+    },
+    "conversation": {
       "list": []
     },
     "game": {
       "list": []
     },
-    "gamePlugin": {
-      "list": []
-    },
     "miniprogram": {
       "list": [
         {
+          "name": "",
+          "path": "",
+          "query": "",
+          "id": 0
+        },
+        {
+          "id": 1,
           "name": "pages/doctor/doctor_family_list",
           "pathName": "pages/doctor/doctor_family_list",
-          "query": "",
-          "scene": null
+          "query": ""
         }
       ]
     }

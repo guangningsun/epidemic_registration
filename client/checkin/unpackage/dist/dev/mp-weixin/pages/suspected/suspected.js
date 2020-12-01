@@ -211,7 +211,14 @@ var _default =
   },
 
   onLoad: function onLoad(option) {
+
+    uni.showLoading({
+      title: "请求中..." });
+
+
     this.tel_num = uni.getStorageSync(getApp().globalData.key_phone_num);
+
+    this.loadData();
 
     console.log(option);
     if (option.familyInfo !== undefined) {
@@ -245,6 +252,17 @@ var _default =
 
     },
 
+    loadData: function loadData() {
+
+      this.requestWithMethod(
+      getApp().globalData.api_get_family_info + this.tel_num,
+      'GET',
+      '',
+      this.successCb,
+      this.failCb,
+      this.completeCb);
+
+    },
 
     ////////////////////
 
@@ -263,10 +281,19 @@ var _default =
     },
     onSubmit: function onSubmit() {
 
+      var isValidTel = this.isPoneAvailable(this.tel_num);
+      if (!isValidTel) {
+        console.log('tel_num not valid!');
+        this.showToast('手机号非法，请重新输入');
+        return;
+      }
+
       uni.setStorageSync(getApp().globalData.key_family_num, this.family_num);
       uni.setStorageSync(getApp().globalData.key_address, this.address);
       uni.setStorageSync(getApp().globalData.key_tel, this.tel_num);
       uni.setStorageSync(getApp().globalData.key_family_contact, this.family_contact);
+
+      getApp().globalData.member_list_info = [];
 
       uni.navigateTo({
         url: './suspected_family_member_list' });
@@ -279,41 +306,29 @@ var _default =
       console.log(uni.getStorageSync(getApp().globalData.key_family_num));
       console.log("======");
 
-      // let params = {
-      // 	openid: uni.getStorageSync(getApp().globalData.key_wx_openid),
-      // 	nickname: this.nickname,
-      // 	username: this.user_name,
-      // 	address: this.address,
-      // 	apartment: apart_id
-      // };
+    },
 
-      // this.requestWithMethod(
-      // 	getApp().globalData.api_submit_user_info,
-      // 	"POST",
-      // 	params,
-      // 	this.successCallback,
-      // 	this.failCallback,
-      // 	this.completeCallback);
-    }
-    // successCallback(rsp) {
-    // 	uni.hideLoading();
-    // 	if (rsp.data.error === 0) {
-    // 		uni.setStorageSync(getApp().globalData.key_cat,this.commoditycategory);
-    // 		uni.showToast({
-    // 			title:'提交成功'
-    // 		});
-    // 		uni.navigateTo({
-    // 			url:'../category/category'
-    // 		})
-    // 	}
-    // },
-    // failCallback(err) {
-    // 	uni.hideLoading();
-    // 	this.showToast(err);
-    // 	console.log('api_submit_user_info failed', err);
-    // },
-    // completeCallback(rsp) {},
-  } };exports.default = _default;
+    successCb: function successCb(rsp) {
+      console.log(rsp.data);
+      uni.hideLoading();
+      if (rsp.data.error === 0) {
+        this.familyInfo = rsp.data.msg.family_info;
+        if (!this.isEmpty(this.familyInfo.family_contact_name)) {
+          uni.showToast({
+            icon: "loading",
+            title: "跳转中..." });
+
+          uni.navigateTo({
+            url: "./family_index" });
+
+        }
+      }
+    },
+    failCb: function failCb(err) {
+      uni.hideLoading();
+      console.log('api_get_family_info failed', err);
+    },
+    completeCb: function completeCb(rsp) {} } };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 
 /***/ })

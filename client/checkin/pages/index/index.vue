@@ -174,28 +174,23 @@ export default {
 				this.user_info = rsp.data.msg.user_info;
 				console.log(this.user_info);
 				
-				let user_name = this.user_info[0].user_name;
-				console.log('user_name====' + user_name);
-				uni.setStorageSync(getApp().globalData.key_user_name, user_name);
-				if(this.isEmpty(user_name)){
-					uni.navigateTo({
-						url:'./user_info'
-					});
-				}else{
+				// let user_name = this.user_info[0].user_name;
+				// console.log('user_name====' + user_name);
+				// uni.setStorageSync(getApp().globalData.key_user_name, user_name);
+				// if(this.isEmpty(user_name)){
+				// 	uni.navigateTo({
+				// 		url:'./user_info'
+				// 	});
+				// }else{
 					let user_auth = uni.getStorageSync(getApp().globalData.key_user_auth)
 					if (user_auth == 0) {
 						uni.setStorageSync(getApp().globalData.key_user_name,this.user_info[0].user_name);
 						uni.setStorageSync(getApp().globalData.key_phone_num,this.user_info[0].phone_number);
 
-						if(!this.isEmpty(this.apartmentId)){
-							uni.hideLoading();
-							uni.navigateTo({
-								url:'../suspected/suspected'
-							})
-						}else{
-							uni.hideLoading();
-							this.shouldShowContent = true;
-						}
+						uni.hideLoading();
+						uni.navigateTo({
+							url:'../suspected/suspected'
+						})
 					} else if (user_auth == 1) {
 						uni.hideLoading();
 						uni.navigateTo({
@@ -204,7 +199,7 @@ export default {
 					} else {
 						this.showToast('未知错误!');
 					}
-				}
+				// }
 			}
 		},
 		failGetUserInfoCb(err) {

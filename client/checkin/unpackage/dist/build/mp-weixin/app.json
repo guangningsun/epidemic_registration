@@ -1,0 +1,22 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/suspected/suspected",
+    "pages/doctor/doctor_family_list",
+    "pages/suspected/suspected_family_info",
+    "pages/suspected/suspected_family_member_list",
+    "pages/suspected/family_index",
+    "pages/doctor/doctor_assign_room"
+  ],
+  "subPackages": [],
+  "window": {
+    "navigationBarBackgroundColor": "#0f80ff",
+    "navigationBarTitleText": "防疫登记",
+    "navigationStyle": "custom",
+    "navigationBarTextStyle": "white"
+  },
+  "usingComponents": {
+    "cu-custom": "/colorui/components/cu-custom"
+  },
+  "sitemapLocation": "sitemap.json"
+}

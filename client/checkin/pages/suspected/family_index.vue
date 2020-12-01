@@ -13,25 +13,27 @@
 				
 				<view class="flex  p-xs margin-bottom-sm mb-sm">
 					<view class="flex-sub">
-						<view class="flex align-center justify-center margin-top">
+						<view class="align-center justify-center margin-top">
 							<image
+							class="margin-left-sm justify-center"
 								:src="headImg"
 								style="width: 160upx; height: 160upx;"
 							></image>
+							<view class="justify-center text-bold text-lg margin-top-sm text-dark-blue">家庭号：{{familyInfo.family_id}}</view>
 						</view>
 					</view>
 					<view class="flex-twice">
 						<view class=" flex text-dark-gray text-lg margin-left-sm margin-top-xl">
 							<view>
 								<view class="text-bold margin-bottom-xs">{{familyInfo.family_contact_name}}的家庭</view>
-								<view>家庭号：{{familyInfo.family_id}}</view>
-								<view>{{familyInfo.family_address}}</view>
+								<view>电话：{{familyInfo.tel_num}}</view>
+								<view>地址：{{familyInfo.family_address}}</view>
 							</view>
 						</view>
 					</view>
 				</view>
 				
-				<view class="flex justify-end padding-sm margin-xs radius">
+				<view class="flex justify-end radius">
 					<button
 						class="cu-btn cuIcon-writefill shadow bg-cyan margin-right-xs margin-bottom-sx"
 						@tap="onGoToFamilyModify"

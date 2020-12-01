@@ -181,13 +181,107 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 var _default =
 {
   data: function data() {
     return {
       member_list: [],
       family_member_num: 0,
-      family_info: "" };
+      family_info: "",
+      modalName: null,
+      current_item_info: "" };
 
   },
 
@@ -225,60 +319,102 @@ var _default =
 
     ////////////////////
 
-    checkBtnEnable: function checkBtnEnable() {
-      console.log(this.family_num);
-      if (
-      this.isEmpty(this.family_contact) ||
-      this.family_num <= 0 ||
-      this.isEmpty(this.tel_num) ||
-      this.isEmpty(this.address))
-      {
-        this.btn_disabled = true;
-      } else {
-        this.btn_disabled = false;
-      }
+    showModal: function showModal(e) {
+      this.modalName = 'DetailModal';
+      this.current_item_info = e;
+      console.log("-=-=-=");
+      console.log(e);
+    },
+
+    hideModal: function hideModal(e) {
+      this.modalName = null;
+    },
+    onShowDetail: function onShowDetail(item) {
+      this.showModal(item);
+    },
+
+    changeRoom: function changeRoom(event, item) {
+      console.log(event);
+      item.room = event.detail.value;
+      console.log(item);
+      // if (
+      // 	this.isEmpty(this.family_contact) ||
+      // 	this.family_num <= 0 ||
+      // 	this.isEmpty(this.tel_num) ||
+      // 	this.isEmpty(this.address)
+      // ) {
+      // 	this.btn_disabled = true;
+      // } else {
+      // 	this.btn_disabled = false;
+      // }
+
+
     },
     onSubmit: function onSubmit() {
 
-      // uni.navigateTo({
-      // 	url:'suspected_family_info'
-      // })
+      uni.showLoading({
+        title: '正在分配' });
 
-      // let params = {
-      // 	openid: uni.getStorageSync(getApp().globalData.key_wx_openid),
-      // 	nickname: this.nickname,
-      // 	username: this.user_name,
-      // 	address: this.address,
-      // 	apartment: apart_id
-      // };
 
-      // this.requestWithMethod(
-      // 	getApp().globalData.api_submit_user_info,
-      // 	"POST",
-      // 	params,
-      // 	this.successCallback,
-      // 	this.failCallback,
-      // 	this.completeCallback);
-    }
-    // successCallback(rsp) {
-    // 	uni.hideLoading();
-    // 	if (rsp.data.error === 0) {
-    // 		uni.setStorageSync(getApp().globalData.key_cat,this.commoditycategory);
-    // 		uni.showToast({
-    // 			title:'提交成功'
-    // 		});
-    // 		uni.navigateTo({
-    // 			url:'../category/category'
-    // 		})
-    // 	}
-    // },
-    // failCallback(err) {
-    // 	uni.hideLoading();
-    // 	this.showToast(err);
-    // 	console.log('api_submit_user_info failed', err);
-    // },
-    // completeCallback(rsp) {},
-  } };exports.default = _default;
+      for (var i = 0; i < this.member_list.length; i++) {
+        var tempMember = this.member_list[i];
+        var params = {
+          id_num: tempMember.id_num,
+          room: tempMember.room,
+          hotel: tempMember.hotel };
+
+
+        this.requestWithMethod(
+        getApp().globalData.api_update_family_info,
+        "POST",
+        params,
+        this.successCallback,
+        this.failCallback,
+        this.completeCallback);
+
+        setTimeout(function () {
+          uni.navigateBack({
+            delta: 1 });
+
+          uni.showToast({
+            icon: 'success',
+            title: '分配成功' });
+
+        }, 2000);
+
+        // let promiseArr = [];
+        // let p = new Promise((resolve, reject) => {
+        //     //当第三方api提供的是异步方法时
+        //     this.requestWithMethod(
+        //     	getApp().globalData.api_update_family_info,
+        //     	"POST",
+        //     	params,
+        //     	this.successCallback,
+        //     	this.failCallback,
+        //     	this.completeCallback);
+        //     });
+        // promiseArr.push(p)
+
+        // //等所有promise任务执行完毕后再执行
+        // Promise.all(promiseArr).then(res => {
+        //     uni.navigateBack({
+        // 		delta: 1
+        // 	});
+        // })
+      }
+    },
+    successCallback: function successCallback(rsp) {
+      uni.hideLoading();
+      if (rsp.data.error === 0) {
+        console.log("分配成功");
+      }
+    },
+    failCallback: function failCallback(err) {
+      uni.hideLoading();
+      this.showToast(err);
+      console.log('api_update_family_info failed', err);
+    },
+    completeCallback: function completeCallback(rsp) {} } };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 
 /***/ })

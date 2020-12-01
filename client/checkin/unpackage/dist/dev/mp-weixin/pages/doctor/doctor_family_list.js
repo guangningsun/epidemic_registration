@@ -171,6 +171,26 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 var _default =
 {
   data: function data() {
@@ -180,29 +200,46 @@ var _default =
       scrollLeft: 0,
       tabTitle: ['全部家庭', '待分配'],
 
-      allNum: 40,
-      notYetNum: 10,
+      allNum: 0,
+      notYetNum: 0,
 
-      family_list: [] };
+      family_list: [],
+      search_word: '',
+
+      family_not_yet_list: [] };
 
   },
 
   onLoad: function onLoad() {
+
+  },
+
+  onShow: function onShow() {
     this.requestAllFamilyInfo();
-    // this.tel_num = uni.getStorageSync(getApp().globalData.key_phone_num);
   },
 
   methods: {
     tabSelect: function tabSelect(e) {
       this.TabCur = e.currentTarget.dataset.id;
       console.log(this.TabCur);
-
+      this.requestAllFamilyInfo();
     },
 
     goToAssignRoom: function goToAssignRoom(e, index) {
 
       uni.navigateTo({
         url: 'doctor_assign_room?familyInfo=' + JSON.stringify(e) });
+
+    },
+
+    onSearch: function onSearch() {
+      this.requestWithMethod(
+      getApp().globalData.api_fuzzy_query + this.search_word,
+      'GET',
+      '',
+      this.successCb,
+      this.failCb,
+      this.completeCb);
 
     },
 
@@ -220,6 +257,17 @@ var _default =
       if (rsp.data.error === 0) {
         this.family_list = rsp.data.msg;
         console.log(this.family_list);
+        this.allNum = this.family_list.length;
+
+        this.family_not_yet_list = [];
+        for (var i = 0; i < this.allNum; i++) {
+          var temp = this.family_list[i];
+          if (temp.checkin_status == '未分配') {
+            this.family_not_yet_list.push(temp);
+          }
+        }
+
+        this.notYetNum = this.family_not_yet_list.length;
 
         // var apartments = this.apartment_picker;
         // this.apartment_info_list.map(function(item) {
@@ -230,7 +278,7 @@ var _default =
       }
     },
     failCb: function failCb(err) {
-      console.log('api_get_all_family_info failed', err);
+      console.log('api_get_all_family_info/api_fuzzy_query failed', err);
     },
     completeCb: function completeCb(rsp) {}
 

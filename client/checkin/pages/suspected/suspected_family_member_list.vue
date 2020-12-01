@@ -8,10 +8,12 @@
 			<view class="cu-item" style="margin-bottom: -10upx;">
 				<view class=" cu-list menu-avatar" >
 					<view class="cu-item padding-left" style="height: 200upx;">
-						<view
-							class="cu-avatar lg margin-left-sm bg-white"
-							:style="item.gender == undefined || item.gender == null || item.gender == '' ? 'background-image:url(../../static/defaultHead.png);' : item.gender == '男' ? 'background-image:url(../../static/head-m.png);' : 'background-image:url(../../static/head-f.png);'"
-						></view>
+						<view class="cu-avatar lg margin-left-sm bg-white">
+							<image
+								:src="item.gender == undefined || item.gender == null || item.gender == '' ? '/static/defaulthead.png' : item.gender == '男' ? '/static/headm.png' : '/static/headf.png'"
+								style="width: 120upx; height: 100upx;"
+							></image>
+						</view>
 						<view class="content4" style="width: calc(100% - 220upx);">
 							<view class="flex justify-between">
 								<view class="title text-lg">{{item.name == undefined || item.name == null || item.name == "" ? '成员姓名' : item.name}}</view>
@@ -152,6 +154,13 @@ export default {
 				uni.showToast({
 					title:'提交成功'
 				});
+				uni.requestSubscribeMessage({
+				  tmplIds: ['UUIzbUHXPhqQC5S3ujtGVE-5uta4PPTAilKewh9sf9o'],
+				  success (res) {
+					  console.log('subscribe msg: ');
+					  console.log(res);
+				  }
+				})
 				uni.navigateTo({
 					url:'./family_index'
 				})

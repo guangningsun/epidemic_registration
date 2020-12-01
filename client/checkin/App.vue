@@ -15,6 +15,7 @@
 			api_create_family_info:'create_family_info/',
 			api_update_family_info:'update_family_info/',
 			api_get_all_family_info:'get_all_family_info/',
+			api_fuzzy_query:'fuzzy_query/',
 			
 			//global
 			member_list_info: [],  // 保存家庭成员列表
