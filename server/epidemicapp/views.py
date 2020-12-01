@@ -250,39 +250,43 @@ def create_family_info(request):
 @api_view(['GET', 'POST'])
 def get_family_info(request,tel_num):
     if request.method == 'GET':
-        checkinset = CheckInfo.objects.filter(family_tel_num=tel_num)
-        serializer = CheckinSerializer(checkinset, many=True)
-        family_member_list_array = []
-        for i in range (0,len(serializer.data)):
-            family_member_info = {}
-            family_member_info["name"] = serializer.data[i]["name"]
-            family_member_info["gender"] = serializer.data[i]["gender"]
-            family_member_info["age"] = serializer.data[i]["age"]
-            family_member_info["nation"] = serializer.data[i]["nation"]
-            family_member_info["id_num"] = serializer.data[i]["id_num"]
-            family_member_info["tel_num"] = serializer.data[i]["tel_num"]
-            family_member_info["address"] = serializer.data[i]["address"]
-            family_member_info["work_place"] = serializer.data[i]["work_place"]
-            family_member_info["has_disease_radio"] = serializer.data[i]["has_disease_radio"]
-            family_member_info["disease_name"] = serializer.data[i]["disease_name"]
-            family_member_info["medicine_name"] = serializer.data[i]["medicine_name"]
-            family_member_info["has_take_medicine_radio"] = serializer.data[i]["has_take_medicine_radio"]
-            family_member_info["room"] = serializer.data[i]["room"]
-            family_member_info["hotel"] = serializer.data[i]["hotel"]
-            family_member_list_array.append(family_member_info)
+        try:
+            checkinset = CheckInfo.objects.filter(family_tel_num=tel_num)
+            serializer = CheckinSerializer(checkinset, many=True)
+            family_member_list_array = []
+            for i in range (0,len(serializer.data)):
+                family_member_info = {}
+                family_member_info["name"] = serializer.data[i]["name"]
+                family_member_info["gender"] = serializer.data[i]["gender"]
+                family_member_info["age"] = serializer.data[i]["age"]
+                family_member_info["nation"] = serializer.data[i]["nation"]
+                family_member_info["id_num"] = serializer.data[i]["id_num"]
+                family_member_info["tel_num"] = serializer.data[i]["tel_num"]
+                family_member_info["address"] = serializer.data[i]["address"]
+                family_member_info["work_place"] = serializer.data[i]["work_place"]
+                family_member_info["has_disease_radio"] = serializer.data[i]["has_disease_radio"]
+                family_member_info["disease_name"] = serializer.data[i]["disease_name"]
+                family_member_info["medicine_name"] = serializer.data[i]["medicine_name"]
+                family_member_info["has_take_medicine_radio"] = serializer.data[i]["has_take_medicine_radio"]
+                family_member_info["room"] = serializer.data[i]["room"]
+                family_member_info["hotel"] = serializer.data[i]["hotel"]
+                family_member_list_array.append(family_member_info)
 
-        res_json = {"error": 0,"msg": {
-                    "family_info": { "family_contact_name" :serializer.data[0]["family_contact_name"] ,
-                                     "tel_num" :serializer.data[0]["family_tel_num"] ,
-                                     "family_address" :serializer.data[0]["family_address"] ,
-                                     "registerTime" :serializer.data[0]["registerTime"] ,
-                                     "checkin_status" :serializer.data[0]["checkin_status"] ,
-                                     "family_member_num" :serializer.data[0]["family_member_num"] ,
-                                     "family_id": serializer.data[0]["family_id"],
-                                     "family_member_list": family_member_list_array 
-                                    } 
-                    }}
-        return Response(res_json)
+            res_json = {"error": 0,"msg": {
+                        "family_info": { "family_contact_name" :serializer.data[0]["family_contact_name"] ,
+                                        "tel_num" :serializer.data[0]["family_tel_num"] ,
+                                        "family_address" :serializer.data[0]["family_address"] ,
+                                        "registerTime" :serializer.data[0]["registerTime"] ,
+                                        "checkin_status" :serializer.data[0]["checkin_status"] ,
+                                        "family_member_num" :serializer.data[0]["family_member_num"] ,
+                                        "family_id": serializer.data[0]["family_id"],
+                                        "family_member_list": family_member_list_array 
+                                        } 
+                        }}
+            return Response(res_json)
+        except:
+            res_json = {"error": 1,"msg": {"获取信息失败"}}
+            return Response(res_json)
     # elif request.method == 'POST':
     #     serializer = UserSerializer(data=request.data)
     #     if serializer.is_valid():
