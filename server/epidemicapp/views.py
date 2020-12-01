@@ -208,7 +208,11 @@ def create_family_info(request):
                 checkin_status = "未分配" # 0未分配 1已分配
                 family_member_num = request.POST['family_member_num']
                 # family_id = int(time.time())
-                family_id = (("A%s") % ( CheckInfo.objects.all().aggregate(Max('id'))["id__max"]+1))
+                family_id = "A1"
+                try:
+                    family_id = (("A%s") % ( CheckInfo.objects.all().aggregate(Max('id'))["id__max"]+1))
+                except:
+                    pass
                 family_member_list = request.POST['family_member_list']
                 # 拿到家庭其他成员list
                 for family_member in json.loads(family_member_list):
