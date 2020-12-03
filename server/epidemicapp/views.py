@@ -261,8 +261,11 @@ def release_isolation(request):
         try:
             family_id = request.POST['family_id']
             CheckInfo.objects.filter(family_id=family_id).delete()
+            res_json = {"error": 0,"msg": {"成功解除隔离"}}
+            return Response(res_json)
         except:
-            pass
+            res_json = {"error": 1,"msg": {"解除隔离失败"}}
+            return Response(res_json)
 
 # 获取家庭信息
 @api_view(['GET', 'POST'])
