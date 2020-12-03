@@ -253,10 +253,16 @@ def create_family_info(request):
             res_json = {"error": 1,"msg": {"创建入住信息失败"}}
             return Response(res_json)
 
+
 # 解除隔离
 @api_view(['POST'])
-def weixin_sns(request,js_code):
-
+def release_isolation(request):
+    if request.method == 'POST':
+        try:
+            family_id = request.POST['family_id']
+            CheckInfo.objects.filter(family_id=family_id).delete()
+        except:
+            pass
 
 # 获取家庭信息
 @api_view(['GET', 'POST'])

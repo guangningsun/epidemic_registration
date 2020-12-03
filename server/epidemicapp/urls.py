@@ -20,8 +20,7 @@ urlpatterns = [
     path('get_all_family_info/', views.get_all_family_info),
     path('fuzzy_query/<tel_num>', views.fuzzy_query),
     path('update_family_info/', views.update_family_info),
-    
-    
+    path('release_isolation/', views.release_isolation),
     
 ] 
  
