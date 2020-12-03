@@ -60,7 +60,7 @@ def update_family_info(request):
             currenttime = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             CheckInfo.objects.filter(id_num=id_num).update(room=room,hotel=hotel)
             # 获取家庭账号
-            fi = CheckInfo.objects.get(id_num=id_num).family_id
+            fi = CheckInfo.objects.filter(id_num=id_num)[0].family_id
             # 遍历家庭id下所有人是否已分配房间
             checkinfo_list = CheckInfo.objects.filter(family_id=fi)
             checkin_status = "已分配" # 0未分配 1已分配
@@ -252,6 +252,10 @@ def create_family_info(request):
         except:
             res_json = {"error": 1,"msg": {"创建入住信息失败"}}
             return Response(res_json)
+
+# 解除隔离
+@api_view(['POST'])
+def weixin_sns(request,js_code):
 
 
 # 获取家庭信息
