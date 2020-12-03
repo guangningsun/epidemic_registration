@@ -58,8 +58,16 @@ def update_family_info(request):
             room = request.POST['room']
             hotel = request.POST['hotel']
             currenttime = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            CheckInfo.objects.filter(id_num=id_num).update(room=room,hotel=hotel)
+            # 获取家庭账号
+            fi = CheckInfo.objects.get(id_num=id_num).family_id
+            # 遍历家庭id下所有人是否已分配房间
+            checkinfo_list = CheckInfo.objects.filter(family_id=fi)
             checkin_status = "已分配" # 0未分配 1已分配
-            CheckInfo.objects.filter(id_num=id_num).update(room=room,hotel=hotel,checkin_status=checkin_status)
+            for i in checkinfo_list:
+                if i.room == '未分配':
+                    checkin_status = "未分配"
+            CheckInfo.objects.filter(id_num=id_num).update(checkin_status=checkin_status)
             # 通知户主房间已分配
             try:
                 ci  = CheckInfo.objects.get(id_num=id_num)
@@ -235,8 +243,8 @@ def create_family_info(request):
                                         disease_name = family_member["disease_name"],
                                         medicine_name = family_member["medicine_name"],
                                         has_take_medicine_radio = family_member["has_take_medicine_radio"],
-                                        room = "(未分配)",
-                                        hotel = "(未分配)",
+                                        room = "未分配",
+                                        hotel = "未分配",
                     )
                     checkin.save()
             res_json = {"error": 0,"msg": {"创建入住信息成功"}}
@@ -327,9 +335,10 @@ def weixin_sns(request,js_code):
             is_login = "1"
             user_auth = "0"
             try:
-                wsk = WeixinSessionKey.objects.get(weixin_openid=openid)
-                wsk.weixin_sessionkey = session_key
-                wsk.save()
+                # wsk = WeixinSessionKey.objects.get(weixin_openid=openid)
+                # wsk.weixin_sessionkey = session_key
+                # wsk.save()
+                WeixinSessionKey.objects.filter(weixin_openid=openid).update(weixin_sessionkey = session_key)
                 userinfo = UserInfo.objects.get(weixin_openid=openid)
                 # 增加用户是否已登录
                 is_login = "1"
@@ -338,6 +347,7 @@ def weixin_sns(request,js_code):
             except :
                 cwsk = WeixinSessionKey(weixin_openid=openid,weixin_sessionkey=session_key)
                 cwsk.save()
+                #WeixinSessionKey.objects.filter(weixin_openid=openid).update(weixin_sessionkey=session_key)
                 is_login = "0"
 
             return HttpResponse("{\"error\":0,\"msg\":\"登录成功\",\"openid\":\""+openid+"\",\"is_login\":\""+is_login+"\",\"auth\":\""+user_auth+"\"}",
@@ -373,8 +383,10 @@ def weixin_gusi(request):
                 userinfo.save()
                 res_data["auth"] = "0"
             return HttpResponse(json.dumps(res_data),content_type='application/json')
-        except:
+        except: 
             pass
+            # res_data["auth"] = "0"
+            # return HttpResponse(json.dumps(res_data),content_type='application/json')
 
 
 def __weixin_send_message(touser,date3,thing6,phrase1,name1):
