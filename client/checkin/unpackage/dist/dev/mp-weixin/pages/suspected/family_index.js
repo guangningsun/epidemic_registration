@@ -217,8 +217,9 @@ var _default =
   },
 
   onLoad: function onLoad() {
+
     // let nickname = uni.getStorageSync('key_user_nickname');
-    var tel = uni.getStorageSync(getApp().globalData.key_tel);
+    var tel = uni.getStorageSync(getApp().globalData.key_phone_num);
     this.tel_num = tel;
 
   },
@@ -239,6 +240,8 @@ var _default =
         url: 'suspected?familyInfo=' + JSON.stringify(this.familyInfo) });
 
 
+      getApp().globalData.isModifyMember = true;
+
     },
 
     successCb: function successCb(rsp) {
@@ -247,6 +250,7 @@ var _default =
       if (rsp.data.error === 0) {
         this.familyInfo = rsp.data.msg.family_info;
         this.member_list = this.familyInfo.family_member_list;
+        getApp().globalData.member_list_info = this.member_list;
       }
     },
     failCb: function failCb(err) {

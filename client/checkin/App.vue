@@ -16,9 +16,11 @@
 			api_update_family_info:'update_family_info/',
 			api_get_all_family_info:'get_all_family_info/',
 			api_fuzzy_query:'fuzzy_query/',
+			api_release_isolation:'release_isolation/',
 			
 			//global
 			member_list_info: [],  // 保存家庭成员列表
+			isModifyMember:false,
 			
 			// key 值
 			key_family_num:'key_family_num',

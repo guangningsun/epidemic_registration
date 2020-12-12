@@ -191,6 +191,16 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 var _default =
 {
   data: function data() {
@@ -231,6 +241,44 @@ var _default =
         url: 'doctor_assign_room?familyInfo=' + JSON.stringify(e) });
 
     },
+
+    onRelease: function onRelease(item) {
+      uni.showLoading({
+        title: '正在解除...' });
+
+
+      var params = {
+        family_id: item.family_id };
+
+
+      this.requestWithMethod(
+      getApp().globalData.api_release_isolation,
+      "POST",
+      params,
+      this.successCallback,
+      this.failCallback,
+      this.completeCallback);
+    },
+
+    successCallback: function successCallback(rsp) {
+      uni.hideLoading();
+      if (rsp.data.error === 0) {
+        uni.showToast({
+          title: '解除成功' });
+
+
+        this.requestAllFamilyInfo();
+      } else {
+        uni.showToast({
+          icon: "none",
+          title: '操作失败' });
+
+      }
+    },
+    failCallback: function failCallback(err) {
+      console.log('api_release_isolation failed', err);
+    },
+    completeCallback: function completeCallback(rsp) {},
 
     onSearch: function onSearch() {
       this.requestWithMethod(

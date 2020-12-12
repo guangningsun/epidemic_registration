@@ -37,7 +37,7 @@
 									name="input"
 									class="text-left"
 									@input="changeRoom($event, item)"
-									v-model="item.room == '(未分配)' || item.room == '-' ? '' : item.room"
+									v-model="item.room == '未分配' || item.room == '-' ? '' : item.room"
 								/>
 							</view>
 						</view>
@@ -277,6 +277,11 @@ export default {
 			uni.hideLoading();
 			if (rsp.data.error === 0) {
 				console.log("分配成功");
+			}else{
+				uni.showToast({
+					icon:"none",
+					title:rsp.data.msg
+				});
 			}
 		},
 		failCallback(err) {

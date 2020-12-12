@@ -82,18 +82,15 @@ export default {
 	
 	onLoad(option) {
 		
-		uni.showLoading({
-			title:"请求中..."
-		});
-		
 		this.tel_num = uni.getStorageSync(getApp().globalData.key_phone_num);
 		
-		this.loadData();
+		//this.loadData();
 		
 		console.log(option)
 		if(option.familyInfo !== undefined){
-			let info = JSON.parse(decodeURIComponent(option.familyInfo));
+			let info = JSON.parse(option.familyInfo);
 			this.family_info = info;
+			console.log("sssssss");
 			console.log(this.family_info);
 			
 			this.family_contact = this.family_info.family_contact_name;
@@ -104,7 +101,8 @@ export default {
 			this.index = this.picker.indexOf(this.family_num);
 			
 			getApp().globalData.member_list_info = this.family_info.family_member_list;
-			
+			console.log("0-0-0");
+			console.log(getApp().globalData.member_list_info);
 			this.checkBtnEnable();
 		}
 	},
@@ -123,15 +121,20 @@ export default {
 		},
 	
 		loadData() {
+			if(!this.isEmpty(this.tel_num)){
+				this.requestWithMethod(
+					getApp().globalData.api_get_family_info + this.tel_num,
+					'GET',
+					'',
+					this.successCb,
+					this.failCb,
+					this.completeCb
+				);
+			}else{
+				console.log("loadData() tel_num is empty,获取不到手机号！")
+				uni.hideLoading();
+			}
 			
-			this.requestWithMethod(
-				getApp().globalData.api_get_family_info + this.tel_num,
-				'GET',
-				'',
-				this.successCb,
-				this.failCb,
-				this.completeCb
-			);
 		},
 
 		////////////////////
@@ -163,7 +166,40 @@ export default {
 			uni.setStorageSync(getApp().globalData.key_tel,this.tel_num);
 			uni.setStorageSync(getApp().globalData.key_family_contact,this.family_contact);
 			
-			getApp().globalData.member_list_info = [];
+			if(!getApp().globalData.isModifyMember){
+				getApp().globalData.member_list_info = [];
+			}
+			
+			//如果改了家庭成员数量，增加或者减少的处理
+			var pre_family_list = getApp().globalData.member_list_info;
+			var diff_num = this.family_num - pre_family_list.length;
+			console.log("diff_num:")
+			console.log(diff_num);
+			if(diff_num > 0){
+				for(var i = 0; i < diff_num; i++){
+					var memberInfo = {
+						name:"",
+						gender:"",
+						age:"",
+						nation:"",
+						id_num:"",
+						tel_num:"",
+						address:uni.getStorageSync(getApp().globalData.key_address),
+						work_place:"",
+						
+						has_disease_radio:"",
+						disease_index:-1,
+						disease_name:"",
+						should_show_other_disease:false,
+						
+						medicine_name:"",
+						has_take_medicine_radio:""
+					}
+					getApp().globalData.member_list_info.push(memberInfo);
+				}
+			}else if(diff_num < 0){
+				getApp().globalData.member_list_info.length = this.family_num;
+			}
 			
 			uni.navigateTo({
 				url:'./suspected_family_member_list'
@@ -192,6 +228,9 @@ export default {
 						url:"./family_index"
 					})
 				}
+			}
+			else{
+				
 			}
 		},
 		failCb(err) {

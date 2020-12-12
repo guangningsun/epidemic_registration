@@ -87,8 +87,9 @@ export default {
 	},
 
 	onLoad() {
+		
 		// let nickname = uni.getStorageSync('key_user_nickname');
-		let tel = uni.getStorageSync(getApp().globalData.key_tel);
+		let tel = uni.getStorageSync(getApp().globalData.key_phone_num);
 		this.tel_num = tel;
 		
 	},
@@ -107,7 +108,9 @@ export default {
 			
 			uni.navigateTo({
 				url: 'suspected?familyInfo=' + JSON.stringify(this.familyInfo)
-			})
+			});
+			
+			getApp().globalData.isModifyMember = true;
 
 		},
 		
@@ -117,6 +120,7 @@ export default {
 			if (rsp.data.error === 0) {
 				this.familyInfo = rsp.data.msg.family_info;
 				this.member_list = this.familyInfo.family_member_list;
+				getApp().globalData.member_list_info = this.member_list;
 			}
 		},
 		failCb(err) {

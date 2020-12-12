@@ -20,23 +20,29 @@
 			</view>
 		</view>
 		
-		<view v-show="TabCur == 0" class="cu-card card-margin" style="margin-bottom: -30upx;" v-for="(item,index) in family_list" :key="index" @tap="goToAssignRoom(item,index)">
+		<view v-show="TabCur == 0" class="cu-card card-margin" style="margin-bottom: -30upx;" v-for="(item,index) in family_list" :key="index" >
 			<view class="cu-item">
-				<view class="flex justify-between">
-					<view class="flex align-center text-left margin-top-sm margin-left-sm text-gray" style="width: 100%;">{{item.registerTime}}</view>
-					<view class="cu-tag radius bg-green">{{item.checkin_status}}</view>
+				<view class="" @tap="goToAssignRoom(item,index)">
+					<view class="flex justify-between">
+						<view class="flex align-center text-left margin-top-sm margin-left-sm text-gray" style="width: 100%;">{{item.registerTime}}</view>
+						<view class="cu-tag radius bg-green">{{item.checkin_status}}</view>
+					</view>
+					<view class="flex align-center">
+						<view class="margin">
+							<image class="margin-left-sm" :src="'../../static/home.png'" style="width: 80upx; height: 80upx;"></image>
+							<view class=" padding-left-sm justify-center text-bold text-dark-blue">家庭号:<br>{{item.family_id}}</view>
+						</view>
+						
+						<view class="margin-left-sm">
+							<view class="text-bold">{{item.family_contact_name}}的家庭</view>
+							<view>家庭人数: {{item.family_member_num}}</view>
+							<view>家庭住址: {{item.family_address}}</view>
+						</view>
+					</view>
 				</view>
-				<view class="flex align-center">
-					<view>
-						<image class="margin-left-sm" :src="'../../static/home.png'" style="width: 100upx; height: 100upx;"></image>
-						<view class="padding-bottom-sm padding-left-sm justify-center text-bold text-dark-blue">家庭号:<br>{{item.family_id}}</view>
-					</view>
-					
-					<view class="margin-left-sm">
-						<view class="text-bold">{{item.family_contact_name}}的家庭</view>
-						<view>家庭人数: {{item.family_member_num}}</view>
-						<view>家庭住址: {{item.family_address}}</view>
-					</view>
+				
+				<view class="flex justify-end" style="margin-top: -10upx;">
+					<button class="cu-btn line-orange margin-bottom-sm margin-right-xs" @tap="onRelease(item)">解除隔离</button>
 				</view>
 			</view>
 		</view>
@@ -47,9 +53,13 @@
 					<view class="flex align-center text-left margin-top-sm margin-left-sm text-gray" style="width: 100%;">{{item.registerTime}}</view>
 					<view class="cu-tag radius bg-green">{{item.checkin_status}}</view>
 				</view>
-				<view class="flex">
-					<image class="margin" :src="'../../static/home.png'" style="width: 100upx; height: 100upx;"></image>
-					<view class="margin-top-sm">
+				<view class="flex align-center">
+					<view class="margin">
+						<image class="margin-left-sm" :src="'../../static/home.png'" style="width: 100upx; height: 100upx;"></image>
+						<view class="padding-bottom-sm padding-left-sm justify-center text-bold text-dark-blue">家庭号:<br>{{item.family_id}}</view>
+					</view>
+					
+					<view class="margin-left-sm">
 						<view class="text-bold">{{item.family_contact_name}}的家庭</view>
 						<view>家庭人数: {{item.family_member_num}}</view>
 						<view>家庭住址: {{item.family_address}}</view>
@@ -101,6 +111,44 @@ export default {
 				url: 'doctor_assign_room?familyInfo=' + JSON.stringify(e)
 			})
 		},
+		
+		onRelease(item){
+			uni.showLoading({
+				title:'正在解除...'
+			})
+			
+			let params = {
+				family_id: item.family_id
+			};
+									
+			this.requestWithMethod(
+				getApp().globalData.api_release_isolation,
+				"POST",
+				params,
+				this.successCallback,
+				this.failCallback,
+				this.completeCallback);
+		},
+		
+		successCallback(rsp) {
+			uni.hideLoading();
+			if (rsp.data.error === 0) {
+				uni.showToast({
+					title:'解除成功'
+				});
+				
+				this.requestAllFamilyInfo();
+			}else{
+				uni.showToast({
+					icon:"none",
+					title:'操作失败'
+				});
+			}
+		},
+		failCallback(err) {
+			console.log('api_release_isolation failed', err);
+		},
+		completeCallback(rsp) {},
 		
 		onSearch(){
 			this.requestWithMethod(

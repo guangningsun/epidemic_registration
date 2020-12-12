@@ -49,10 +49,11 @@ export default {
 	},
 
 	onLoad(option) {
+		console.log("==1111");
 		console.log(option)
-		if(option.memberListInfo !== undefined){
-			let info = JSON.parse(decodeURIComponent(option.memberListInfo));
-			this.member_list = info;
+		if(option.familyInfo !== undefined){
+			let info = JSON.parse(option.familyInfo);
+			this.member_list = info.family_member_list;
 			console.log(this.member_list);
 		}
 		else{
@@ -160,13 +161,14 @@ export default {
 					  console.log('subscribe msg: ');
 					  console.log(res);
 				  }
-				})
+				});
 				uni.navigateTo({
 					url:'./family_index'
 				})
 			}else{
 				uni.showToast({
-					title:'操作失败'
+					icon:"none",
+					title:rsp.data.msg
 				});
 			}
 		},

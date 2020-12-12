@@ -179,10 +179,11 @@ var _default =
   },
 
   onLoad: function onLoad(option) {
+    console.log("==1111");
     console.log(option);
-    if (option.memberListInfo !== undefined) {
-      var info = JSON.parse(decodeURIComponent(option.memberListInfo));
-      this.member_list = info;
+    if (option.familyInfo !== undefined) {
+      var info = JSON.parse(option.familyInfo);
+      this.member_list = info.family_member_list;
       console.log(this.member_list);
     } else
     {
@@ -296,7 +297,8 @@ var _default =
 
       } else {
         uni.showToast({
-          title: '操作失败' });
+          icon: "none",
+          title: rsp.data.msg });
 
       }
     },

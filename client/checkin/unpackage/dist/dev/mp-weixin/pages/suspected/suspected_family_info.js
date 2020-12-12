@@ -532,8 +532,8 @@ var _default =
 
       console.log(getApp().globalData.member_list_info);
 
-      uni.navigateTo({
-        url: 'suspected_family_member_list' });
+      uni.navigateBack({
+        delta: 1 });
 
 
       // let params = {

@@ -307,9 +307,35 @@ var _default =
     /////
     successGetUserInfoCb: function successGetUserInfoCb(rsp) {
       uni.hideLoading();
+      console.log("successGetUserInfoCb !!!");
+      console.log(rsp);
       if (rsp.data.error === 0) {
-        this.user_info = rsp.data.msg.user_info;
-        console.log(this.user_info);
+        uni.hideLoading();
+
+        var user_info = rsp.data.msg.user_info;
+        uni.setStorageSync(getApp().globalData.key_phone_num, user_info[0].phone_number);
+        console.log(user_info[0].phone_number);
+        this.tel_num = user_info[0].phone_number;
+        if (!this.isEmpty(this.tel_num)) {
+          this.requestWithMethod(
+          getApp().globalData.api_get_family_info + this.tel_num,
+          'GET',
+          '',
+          this.successGetFamilyInfoCb,
+          this.failGetFamilyInfoCb,
+          this.completeCb);
+
+        } else {
+          console.log("loadData() tel_num is empty,获取不到手机号！");
+          uni.hideLoading();
+          uni.navigateTo({
+            url: '../suspected/suspected' });
+
+        }
+
+        // console.log(rsp);
+        // this.user_info = rsp.data.msg.user_info;
+        // console.log(this.user_info);
 
         // let user_name = this.user_info[0].user_name;
         // console.log('user_name====' + user_name);
@@ -319,23 +345,24 @@ var _default =
         // 		url:'./user_info'
         // 	});
         // }else{
-        var user_auth = uni.getStorageSync(getApp().globalData.key_user_auth);
-        if (user_auth == 0) {
-          uni.setStorageSync(getApp().globalData.key_user_name, this.user_info[0].user_name);
-          uni.setStorageSync(getApp().globalData.key_phone_num, this.user_info[0].phone_number);
+        // let user_auth = uni.getStorageSync(getApp().globalData.key_user_auth)
+        // if () {
+        // 	// uni.setStorageSync(getApp().globalData.key_user_name,this.user_info[0].user_name);
+        // 	// uni.setStorageSync(getApp().globalData.key_phone_num,this.user_info[0].phone_number);
 
-          uni.hideLoading();
-          uni.navigateTo({
-            url: '../suspected/suspected' });
-
-        } else if (user_auth == 1) {
-          uni.hideLoading();
-          uni.navigateTo({
-            url: '../doctor/doctor_family_list' });
-
-        } else {
-          this.showToast('未知错误!');
-        }
+        // 	uni.hideLoading();
+        // 	uni.navigateTo({
+        // 		url:'../suspected/suspected'
+        // 	})
+        // } 
+        // else if (user_auth == 1) {
+        // 	uni.hideLoading();
+        // 	uni.navigateTo({
+        // 		url: '../doctor/doctor_family_list'
+        // 	});
+        // } else {
+        // 	this.showToast('未知错误!');
+        // }
         // }
       }
     },
@@ -356,6 +383,40 @@ var _default =
       this.completeGetUserInfoCb);
 
     },
+
+    successGetFamilyInfoCb: function successGetFamilyInfoCb(rsp) {
+      console.log("successGetFamilyInfoCb !!");
+      console.log(rsp.data);
+      uni.hideLoading();
+      if (rsp.data.error === 0) {
+        var familyInfo = rsp.data.msg.family_info;
+        console.log(familyInfo.family_contact_name);
+        console.log(!this.isEmpty(familyInfo.family_contact_name));
+        if (!this.isEmpty(familyInfo.family_contact_name)) {
+          console.log("shittttt");
+          uni.showToast({
+            icon: "loading",
+            title: "跳转中..." });
+
+          uni.navigateTo({
+            url: "../suspected/family_index" });
+
+        }
+      } else
+      {
+        uni.navigateTo({
+          url: '../suspected/suspected' });
+
+      }
+    },
+    failGetFamilyInfoCb: function failGetFamilyInfoCb(err) {
+      uni.hideLoading();
+      uni.navigateTo({
+        url: '../suspected/suspected' });
+
+      console.log('api_get_family_info failed', err);
+    },
+
 
     onGotUserInfo: function onGotUserInfo(e) {
       console.log(e);

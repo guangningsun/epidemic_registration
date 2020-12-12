@@ -10,31 +10,23 @@
   "libVersion": "",
   "appid": "wx181045b78530d9a6",
   "projectname": "信息录入登记",
-  "simulatorType": "wechat",
-  "simulatorPluginLibVersion": {},
   "condition": {
-    "search": {
-      "list": []
-    },
-    "conversation": {
+    "plugin": {
       "list": []
     },
     "game": {
       "list": []
     },
+    "gamePlugin": {
+      "list": []
+    },
     "miniprogram": {
       "list": [
         {
-          "name": "",
-          "path": "",
+          "name": "pages/index/index",
+          "pathName": "pages/index/index",
           "query": "",
-          "id": 0
-        },
-        {
-          "id": 1,
-          "name": "pages/doctor/doctor_family_list",
-          "pathName": "pages/doctor/doctor_family_list",
-          "query": ""
+          "scene": null
         }
       ]
     }

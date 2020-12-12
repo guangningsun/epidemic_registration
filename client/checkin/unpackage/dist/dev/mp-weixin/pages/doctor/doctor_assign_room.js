@@ -407,6 +407,11 @@ var _default =
       uni.hideLoading();
       if (rsp.data.error === 0) {
         console.log("分配成功");
+      } else {
+        uni.showToast({
+          icon: "none",
+          title: rsp.data.msg });
+
       }
     },
     failCallback: function failCallback(err) {

@@ -23,12 +23,14 @@ _vue.default.prototype.showToast = function (msg) {
 },
 
 _vue.default.prototype.isPoneAvailable = function (tel) {
-  var myreg = /^[1][3,4,5,7,8][0-9]{9}$/;
+  if (tel == '') {
+    return false;
+  }
+  var myreg = /^[1][3,4,5,6,7,8][0-9]{9}$/;
   if (!myreg.test(tel)) {
     return false;
-  } else {
-    return true;
   }
+  return true;
 },
 
 _vue.default.prototype.request = function (api, params, successCallback, failedCallback, completeCallback) {
@@ -251,9 +253,11 @@ var _vue = _interopRequireDefault(__webpack_require__(/*! vue */ 2));function _i
     api_update_family_info: 'update_family_info/',
     api_get_all_family_info: 'get_all_family_info/',
     api_fuzzy_query: 'fuzzy_query/',
+    api_release_isolation: 'release_isolation/',
 
     //global
     member_list_info: [], // 保存家庭成员列表
+    isModifyMember: false,
 
     // key 值
     key_family_num: 'key_family_num',
