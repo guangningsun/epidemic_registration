@@ -27,7 +27,7 @@ class CheckInfo(models.Model):
     has_disease_radio = models.BooleanField(verbose_name='是否有病史')
     disease_name = models.CharField(max_length=200,verbose_name='病史名称')
     medicine_name = models.CharField(max_length=200,verbose_name='用药名称')
-    has_take_medicine_radio = models.CharField(max_length=200,verbose_name='是否用药')
+    has_take_medicine_radio = models.BooleanField(verbose_name='是否用药')
     room = models.CharField(max_length=200,verbose_name='分配房间名',default="-")
     hotel = models.CharField(max_length=200,verbose_name='分配酒店名称',default="-")
    
